@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETF多策略信号报告 | 2026-07-22 23:52:32</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+            background: #f5f6fa; color: #2c3e50; padding: 20px; line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white; padding: 30px; border-radius: 12px; margin-bottom: 20px;
+        }
+        .header h1 { font-size: 24px; margin-bottom: 8px; }
+        .header .meta { opacity: 0.8; font-size: 14px; }
+        .summary-cards { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .card {
+            background: white; padding: 20px; border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); flex: 1; min-width: 150px;
+            text-align: center;
+        }
+        .card .value { font-size: 28px; font-weight: bold; color: #2c3e50; }
+        .card .label { font-size: 13px; color: #7f8c8d; margin-top: 5px; }
+        .card.alert .value { color: #e74c3c; }
+        .card.success .value { color: #27ae60; }
+        .section {
+            background: white; border-radius: 12px; padding: 20px;
+            margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+        .section h2 { font-size: 18px; margin-bottom: 15px; color: #2c3e50;
+                       border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #f8f9fa; padding: 10px; text-align: left;
+             border-bottom: 2px solid #dee2e6; color: #495057; white-space: nowrap; }
+        td { padding: 10px; border-bottom: 1px solid #ecf0f1; vertical-align: top; }
+        tr.strong-buy { background: #fff5f5; }
+        tr.buy { background: #f0fff4; }
+        tr.light-buy { background: #fffef5; }
+        tr.watch { background: #f8f9fa; }
+        .score-cell { font-size: 16px; font-weight: bold; }
+        .name-cell .etf-code { font-size: 11px; color: #95a5a6; margin-top: 2px; }
+        .level-badge {
+            padding: 3px 10px; border-radius: 12px; font-size: 11px;
+            font-weight: bold; color: white;
+        }
+        .level-strong_buy { background: #e74c3c; }
+        .level-buy { background: #27ae60; }
+        .level-light_buy { background: #f39c12; }
+        .level-watch { background: #7f8c8d; }
+        .level-wait { background: #bdc3c7; }
+        .algo-tag {
+            background: #ecf0f1; padding: 2px 8px; border-radius: 4px;
+            font-size: 11px; color: #2c3e50;
+        }
+        .price-cell { font-family: 'Courier New', monospace; font-size: 14px; }
+        .action-cell { font-weight: bold; }
+        .position-cell { font-weight: bold; color: #e67e22; }
+        .indicators-cell { font-size: 11px; color: #7f8c8d; }
+        .reasons-cell { font-size: 11px; color: #555; max-width: 300px; }
+        .strong-signals-section { margin-bottom: 20px; }
+        .strong-signal-item {
+            background: white; padding: 12px 15px; border-radius: 8px;
+            margin-bottom: 8px; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06); border-left: 4px solid #e74c3c;
+        }
+        .strong-score {
+            font-size: 20px; font-weight: bold; color: #e74c3c;
+            min-width: 50px;
+        }
+        .strong-name { font-weight: bold; min-width: 100px; }
+        .strong-action { color: #27ae60; font-weight: bold; }
+        .backtest-section h2 { margin-bottom: 15px; }
+        .bt-summary { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        .bt-card {
+            background: #f8f9fa; padding: 15px; border-radius: 8px;
+            text-align: center; flex: 1; min-width: 120px;
+        }
+        .bt-card .bt-value { font-size: 22px; font-weight: bold; color: #2c3e50; }
+        .bt-card .bt-win { color: #27ae60; }
+        .bt-card .bt-label { font-size: 12px; color: #7f8c8d; margin-top: 5px; }
+        .bt-table { font-size: 12px; }
+        .bt-table th { background: #f8f9fa; }
+        .footer {
+            text-align: center; padding: 20px; color: #95a5a6;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ETF多策略信号报告</h1>
+        <div class="meta">
+            生成时间: 2026-07-22 23:52:32 | 策略: 14种算法 × 28只ETF | 胜率目标: T+3
+            <br>数据源: akshare | 运行时间: 14:45
+        </div>
+    </div>
+
+    <div class="summary-cards">
+        <div class="card">
+            <div class="value">28</div>
+            <div class="label">ETF总数</div>
+        </div>
+        <div class="card success">
+            <div class="value">2</div>
+            <div class="label">有效信号(≥60分)</div>
+        </div>
+        <div class="card alert">
+            <div class="value">0</div>
+            <div class="label">强信号(≥75分)</div>
+        </div>
+        <div class="card alert">
+            <div class="value">0</div>
+            <div class="label">极强信号(≥85分)</div>
+        </div>
+    </div>
+
+    
+
+    <div class="section">
+        <h2>📋 全部信号（按信号分排序）</h2>
+        <table>
+            <tr>
+                <th>信号分</th>
+                <th>等级</th>
+                <th>ETF名称</th>
+                <th>算法</th>
+                <th>当前价</th>
+                <th>操作</th>
+                <th>建议仓位</th>
+                <th>关键指标</th>
+                <th>信号理由</th>
+            </tr>
+            
+            <tr class="light-buy">
+                <td class="score-cell" style="color:#f39c12;font-weight:bold;font-size:16px;">70.0</td>
+                <td><span class="level-badge level-light_buy">LIGHT_BUY</span></td>
+                <td class="name-cell">
+                    <strong>纳指ETF</strong>
+                    <div class="etf-code">SH513100 | 海外科技</div>
+                </td>
+                <td><span class="algo-tag">trend_pullback</span></td>
+                <td class="price-cell">2.130</td>
+                <td class="action-cell"><strong>轻仓买入</strong></td>
+                <td class="position-cell">15%</td>
+                <td class="indicators-cell">RSI:36 | BB:0.20 | 偏离MA20:-1.7% | 动量:-2.0%</td>
+                <td class="reasons-cell">• 价格在MA200上方<br>• 精确回踩MA20（偏离-1.7%）<br>• MACD柱线收窄，底背离</td>
+            </tr>
+            <tr class="light-buy">
+                <td class="score-cell" style="color:#f39c12;font-weight:bold;font-size:16px;">60.0</td>
+                <td><span class="level-badge level-light_buy">LIGHT_BUY</span></td>
+                <td class="name-cell">
+                    <strong>标普500ETF</strong>
+                    <div class="etf-code">SH513500 | 海外指数</div>
+                </td>
+                <td><span class="algo-tag">trend_pullback</span></td>
+                <td class="price-cell">2.523</td>
+                <td class="action-cell"><strong>轻仓买入</strong></td>
+                <td class="position-cell">15%</td>
+                <td class="indicators-cell">RSI:57 | BB:0.62 | 偏离MA20:+0.5% | 动量:+0.8%</td>
+                <td class="reasons-cell">• 处于上升趋势中（MA200之上）<br>• 精确回踩MA20（偏离+0.4%）<br>• MACD柱线收窄，底背离</td>
+            </tr>
+            <tr class="watch">
+                <td class="score-cell" style="color:#7f8c8d;font-weight:bold;font-size:16px;">47.0</td>
+                <td><span class="level-badge level-watch">WATCH</span></td>
+                <td class="name-cell">
+                    <strong>标普油气ETF</strong>
+                    <div class="etf-code">SZ161129 | 石油</div>
+                </td>
+                <td><span class="algo-tag">oil_pair_reversal</span></td>
+                <td class="price-cell">2.019</td>
+                <td class="action-cell"><strong>观察</strong></td>
+                <td class="position-cell">5%</td>
+                <td class="indicators-cell">RSI:78 | Z:1.8 | BB:0.94 | 量比:2.3</td>
+                <td class="reasons-cell">• 原油强趋势($85.9+RSI=83+在MA20上)<br>• 量比2.3，放量</td>
+            </tr>
+            <tr class="watch">
+                <td class="score-cell" style="color:#7f8c8d;font-weight:bold;font-size:16px;">42.0</td>
+                <td><span class="level-badge level-watch">WATCH</span></td>
+                <td class="name-cell">
+                    <strong>石油LOF</strong>
+                    <div class="etf-code">SZ162411 | 石油</div>
+                </td>
+                <td><span class="algo-tag">oil_pair_reversal</span></td>
+                <td class="price-cell">0.934</td>
+                <td class="action-cell"><strong>观察</strong></td>
+                <td class="position-cell">5%</td>
+                <td class="indicators-cell">RSI:75 | Z:2.1 | BB:1.02 | 量比:1.0</td>
+                <td class="reasons-cell">• 原油强趋势($85.9+RSI=83+在MA20上)</td>
+            </tr>
+            <tr class="watch">
+                <td class="score-cell" style="color:#7f8c8d;font-weight:bold;font-size:16px;">40.0</td>
+                <td><span class="level-badge level-watch">WATCH</span></td>
+                <td class="name-cell">
+                    <strong>黄金股ETF</strong>
+                    <div class="etf-code">SH517520 | 黄金</div>
+                </td>
+                <td><span class="algo-tag">gold_pair_reversal</span></td>
+                <td class="price-cell">1.854</td>
+                <td class="action-cell"><strong>观察</strong></td>
+                <td class="position-cell">5%</td>
+                <td class="indicators-cell">RSI:62 | Z:1.4 | BB:0.84 | 量比:1.3</td>
+                <td class="reasons-cell">• 黄金强趋势(RSI=61+在MA20上)<br>• 偏离MA200=-16.8%，严重超卖</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">38.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>机器人ETF</strong>
+                    <div class="etf-code">SH562500 | 机器人</div>
+                </td>
+                <td><span class="algo-tag">volatility_breakout</span></td>
+                <td class="price-cell">0.961</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:32 | Z:-1.5 | BB:0.12 | 量比:0.9</td>
+                <td class="reasons-cell">• Z-score=-1.5</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">38.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>军工ETF</strong>
+                    <div class="etf-code">SH512660 | 军工</div>
+                </td>
+                <td><span class="algo-tag">event_driven</span></td>
+                <td class="price-cell">1.083</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:29 | Z:-1.5 | BB:0.12 | 量比:1.3</td>
+                <td class="reasons-cell">• 高波动+严重偏离MA60</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">34.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>传媒ETF</strong>
+                    <div class="etf-code">SH512980 | 传媒</div>
+                </td>
+                <td><span class="algo-tag">momentum_pullback</span></td>
+                <td class="price-cell">0.780</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:45 | BB:0.34 | 偏离MA20:-1.2% | 动量:-2.9% | 量比:1.0</td>
+                <td class="reasons-cell">• 回踩MA20（偏离-1.2%）</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">28.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>新能源ETF</strong>
+                    <div class="etf-code">SH516160 | 新能源</div>
+                </td>
+                <td><span class="algo-tag">volatility_breakout</span></td>
+                <td class="price-cell">2.388</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:17 | Z:-1.2 | BB:0.20 | 量比:1.2</td>
+                <td class="reasons-cell">• RSI=17，极度超卖</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">20.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>中韩半导体ETF</strong>
+                    <div class="etf-code">SH513310 | 跨境半导体</div>
+                </td>
+                <td><span class="algo-tag">premium_rate</span></td>
+                <td class="price-cell">5.042</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:29 | Z:-1.4 | BB:0.16 | 偏离MA20:-15.0% | 量比:1.9</td>
+                <td class="reasons-cell">• 溢价9.2%，不适宜买入<br>• RSI=29，超卖</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">18.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>消费ETF</strong>
+                    <div class="etf-code">SH510150 | 消费</div>
+                </td>
+                <td><span class="algo-tag">seasonal_value</span></td>
+                <td class="price-cell">0.496</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:59 | BB:0.86 | 偏离MA20:+3.6% | 动量:+8.6%</td>
+                <td class="reasons-cell">• 夏季淡季，超卖概率高</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">18.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>酒ETF</strong>
+                    <div class="etf-code">SH512690 | 白酒</div>
+                </td>
+                <td><span class="algo-tag">seasonal_value</span></td>
+                <td class="price-cell">0.430</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:63 | BB:0.96 | 偏离MA20:+6.1% | 动量:+6.5% | 连跌:1日</td>
+                <td class="reasons-cell">• 夏季淡季，超卖概率高</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">8.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>双创50ETF</strong>
+                    <div class="etf-code">SZ159782 | 中盘宽基</div>
+                </td>
+                <td><span class="algo-tag">broad_reversal</span></td>
+                <td class="price-cell">1.196</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:36 | BB:0.29 | 偏离MA20:-6.0% | 量比:1.9</td>
+                <td class="reasons-cell">—</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">8.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>银行ETF</strong>
+                    <div class="etf-code">SH512800 | 银行</div>
+                </td>
+                <td><span class="algo-tag">financial_value</span></td>
+                <td class="price-cell">0.799</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:71 | Z:1.2 | BB:0.80 | 量比:1.4</td>
+                <td class="reasons-cell">—</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">8.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>煤炭ETF</strong>
+                    <div class="etf-code">SH515220 | 煤炭</div>
+                </td>
+                <td><span class="algo-tag">cycle_momentum</span></td>
+                <td class="price-cell">1.224</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:64 | BB:0.89 | 偏离MA20:+5.2% | 动量:+2.2% | 量比:1.4</td>
+                <td class="reasons-cell">—</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">6.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>红利ETF</strong>
+                    <div class="etf-code">SH510880 | 红利</div>
+                </td>
+                <td><span class="algo-tag">dividend_value</span></td>
+                <td class="price-cell">3.253</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:71 | Z:1.6 | BB:0.90 | 连跌:1日 | 量比:1.5</td>
+                <td class="reasons-cell">• 量比1.5，放量信号</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">5.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>标普生物科技ETF</strong>
+                    <div class="etf-code">SZ159502 | 生物科技</div>
+                </td>
+                <td><span class="algo-tag">support_rebound</span></td>
+                <td class="price-cell">1.542</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:44 | Z:-1.1 | BB:0.23</td>
+                <td class="reasons-cell">—</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>沪深300ETF</strong>
+                    <div class="etf-code">SH510300 | 大盘宽基</div>
+                </td>
+                <td><span class="algo-tag">broad_reversal</span></td>
+                <td class="price-cell">4.765</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:40 | BB:0.36 | 偏离MA20:-1.4% | 量比:1.6</td>
+                <td class="reasons-cell">—</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>消费ETF汇添富</strong>
+                    <div class="etf-code">SZ159928 | 大盘宽基</div>
+                </td>
+                <td><span class="algo-tag">broad_reversal</span></td>
+                <td class="price-cell">0.673</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:65 | BB:0.93 | 偏离MA20:+5.6% | 连跌:1日 | 量比:1.5</td>
+                <td class="reasons-cell">—</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>中概互联ETF</strong>
+                    <div class="etf-code">SH513050 | 中概互联</div>
+                </td>
+                <td><span class="algo-tag">extreme_reversal</span></td>
+                <td class="price-cell">1.082</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:77 | Z:1.3 | BB:0.82 | 连跌:1日 | 量比:1.1</td>
+                <td class="reasons-cell">—</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>半导体ETF</strong>
+                    <div class="etf-code">SH512480 | 科技硬件</div>
+                </td>
+                <td><span class="algo-tag">momentum_pullback</span></td>
+                <td class="price-cell">1.152</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:11 | BB:0.28 | 偏离MA20:-36.7% | 动量:-54.5% | 量比:1.7</td>
+                <td class="reasons-cell">• 20日动量为负，趋势向下</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>通信ETF</strong>
+                    <div class="etf-code">SH515880 | 通信</div>
+                </td>
+                <td><span class="algo-tag">momentum_pullback</span></td>
+                <td class="price-cell">0.671</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:12 | BB:0.28 | 偏离MA20:-38.3% | 动量:-60.9% | 量比:1.8</td>
+                <td class="reasons-cell">• 20日动量为负，趋势向下</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>信创ETF</strong>
+                    <div class="etf-code">SZ159537 | 信创</div>
+                </td>
+                <td><span class="algo-tag">momentum_pullback</span></td>
+                <td class="price-cell">1.018</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:34 | BB:0.36 | 偏离MA20:-17.1% | 动量:-52.6% | 量比:1.2</td>
+                <td class="reasons-cell">• 20日动量为负，趋势向下</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>创新药ETF</strong>
+                    <div class="etf-code">SZ159992 | 创新药</div>
+                </td>
+                <td><span class="algo-tag">support_rebound</span></td>
+                <td class="price-cell">0.880</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:56 | Z:0.9 | BB:0.73</td>
+                <td class="reasons-cell">—</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>券商ETF</strong>
+                    <div class="etf-code">SH512000 | 券商</div>
+                </td>
+                <td><span class="algo-tag">financial_value</span></td>
+                <td class="price-cell">0.532</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:38 | Z:-0.2 | BB:0.45 | 量比:0.8</td>
+                <td class="reasons-cell">—</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>有色金属ETF</strong>
+                    <div class="etf-code">SH512400 | 有色金属</div>
+                </td>
+                <td><span class="algo-tag">cycle_momentum</span></td>
+                <td class="price-cell">1.768</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:39 | BB:0.28 | 偏离MA20:-4.7% | 动量:-13.5% | 量比:1.0</td>
+                <td class="reasons-cell">• 中期动量负，周期向下</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>黄金ETF</strong>
+                    <div class="etf-code">SH518880 | 黄金</div>
+                </td>
+                <td><span class="algo-tag">trend_pullback</span></td>
+                <td class="price-cell">8.560</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:61 | BB:0.54 | 偏离MA20:+0.2% | 动量:-0.8%</td>
+                <td class="reasons-cell">• 跌破MA200 5%，趋势破坏</td>
+            </tr>
+            <tr class="wait">
+                <td class="score-cell" style="color:#bdc3c7;font-weight:bold;font-size:16px;">0.0</td>
+                <td><span class="level-badge level-wait">WAIT</span></td>
+                <td class="name-cell">
+                    <strong>船舶ETF</strong>
+                    <div class="etf-code">SH560710 | 船舶</div>
+                </td>
+                <td><span class="algo-tag">cycle_momentum</span></td>
+                <td class="price-cell">0.839</td>
+                <td class="action-cell"><strong>不买入</strong></td>
+                <td class="position-cell">0%</td>
+                <td class="indicators-cell">RSI:40 | BB:0.18 | 偏离MA20:-4.8% | 动量:-10.4% | 量比:0.7</td>
+                <td class="reasons-cell">• 中期动量负，周期向下</td>
+            </tr>
+        </table>
+    </div>
+
+    
+            <div class="backtest-section">
+                <h2>📊 历史回测统计</h2>
+                <div class="bt-summary">
+                    <div class="bt-card">
+                        <div class="bt-value">827</div>
+                        <div class="bt-label">历史信号总数</div>
+                    </div>
+                    <div class="bt-card">
+                        <div class="bt-value bt-win">74.4%</div>
+                        <div class="bt-label">T+3总胜率</div>
+                    </div>
+                    <div class="bt-card">
+                        <div class="bt-value">+0.19%</div>
+                        <div class="bt-label">平均T+3收益</div>
+                    </div>
+                    <div class="bt-card">
+                        <div class="bt-value">+1.87%</div>
+                        <div class="bt-label">平均T+3最大收益</div>
+                    </div>
+                </div>
+                <table class="bt-table">
+                    <tr><th>算法</th><th>信号数</th><th>胜率</th><th>平均收益</th><th>平均最大收益</th><th>适用ETF</th></tr>
+                    
+            <tr>
+                <td><span class="algo-tag">premium_rate</span></td>
+                <td>3</td>
+                <td style="color:#27ae60;font-weight:bold;">100.0%</td>
+                <td>+4.96%</td>
+                <td>+6.13%</td>
+                <td>中韩半导体ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">extreme_reversal</span></td>
+                <td>18</td>
+                <td style="color:#27ae60;font-weight:bold;">88.9%</td>
+                <td>+1.07%</td>
+                <td>+3.49%</td>
+                <td>中概互联ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">momentum_pullback</span></td>
+                <td>50</td>
+                <td style="color:#27ae60;font-weight:bold;">88.0%</td>
+                <td>+1.94%</td>
+                <td>+4.16%</td>
+                <td>信创ETF, 传媒ETF, 半导体ETF, 通信ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">cycle_momentum</span></td>
+                <td>19</td>
+                <td style="color:#27ae60;font-weight:bold;">84.2%</td>
+                <td>+0.57%</td>
+                <td>+2.60%</td>
+                <td>有色金属ETF, 煤炭ETF, 黄金股ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">financial_value</span></td>
+                <td>87</td>
+                <td style="color:#27ae60;font-weight:bold;">83.9%</td>
+                <td>+0.42%</td>
+                <td>+2.03%</td>
+                <td>银行ETF, 券商ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">broad_reversal</span></td>
+                <td>95</td>
+                <td style="color:#27ae60;font-weight:bold;">77.9%</td>
+                <td>+0.25%</td>
+                <td>+1.82%</td>
+                <td>消费ETF汇添富, 沪深300ETF, 双创50ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">volatility_breakout</span></td>
+                <td>81</td>
+                <td style="color:#27ae60;font-weight:bold;">76.5%</td>
+                <td>-0.57%</td>
+                <td>+1.77%</td>
+                <td>新能源ETF, 机器人ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">seasonal_value</span></td>
+                <td>118</td>
+                <td style="color:#27ae60;font-weight:bold;">76.3%</td>
+                <td>+0.05%</td>
+                <td>+1.87%</td>
+                <td>酒ETF, 消费ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">support_rebound</span></td>
+                <td>95</td>
+                <td style="color:#e74c3c;font-weight:bold;">72.6%</td>
+                <td>-0.25%</td>
+                <td>+1.81%</td>
+                <td>标普生物科技ETF, 创新药ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">dividend_value</span></td>
+                <td>37</td>
+                <td style="color:#e74c3c;font-weight:bold;">70.3%</td>
+                <td>-0.03%</td>
+                <td>+1.16%</td>
+                <td>红利低波ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">trend_pullback</span></td>
+                <td>222</td>
+                <td style="color:#e74c3c;font-weight:bold;">63.5%</td>
+                <td>+0.05%</td>
+                <td>+1.23%</td>
+                <td>标普500ETF, 纳指ETF</td>
+            </tr>
+            <tr>
+                <td><span class="algo-tag">event_driven</span></td>
+                <td>2</td>
+                <td style="color:#e74c3c;font-weight:bold;">50.0%</td>
+                <td>+4.02%</td>
+                <td>+4.81%</td>
+                <td>军工ETF</td>
+            </tr>
+                </table>
+            </div>
+
+    <div class="footer">
+        <p>ETF多策略信号系统 v2.0 | 基于akshare数据 | 14种独特算法 × 28只ETF</p>
+        <p>信号分0-100，越高越推荐买入 | 胜率定义: T+3（3个交易日）最高价收益>0.5%</p>
+        <p>⚠️ 本报告仅供参考，不构成投资建议。投资有风险，入市需谨慎。</p>
+    </div>
+</body>
+</html>

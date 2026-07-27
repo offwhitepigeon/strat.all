@@ -1,0 +1,926 @@
+{
+  "run_time": "2026-07-21T21:32:58.150212",
+  "date": "2026-07-21",
+  "total_etfs": 25,
+  "signals": [
+    {
+      "etf_code": "sh513100",
+      "etf_symbol": "513100",
+      "etf_name": "纳指ETF",
+      "sector": "海外科技",
+      "market": "美股",
+      "algorithm": "trend_pullback",
+      "description": "纳斯达克100，强趋势回踩买入",
+      "current_price": 2.13,
+      "last_close": 2.13,
+      "last_date": "2026-07-21",
+      "score": 70,
+      "level": "LIGHT_BUY",
+      "action": "轻仓买入",
+      "position_pct": 15,
+      "reasons": [
+        "价格在MA200上方",
+        "精确回踩MA20（偏离-1.7%）",
+        "MACD柱线收窄，底背离"
+      ],
+      "indicators": {
+        "discount_rate": -9.89,
+        "rsi_14": 35.84229390680997,
+        "macd_hist": -0.008756637514368797,
+        "dev_ma20": -1.6529688798596387,
+        "ma200": 1.9463250000000003,
+        "momentum_20": -2.023919043238276,
+        "bb_percent_b": 0.19789055013202092
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh513500",
+      "etf_symbol": "513500",
+      "etf_name": "标普500ETF",
+      "sector": "海外指数",
+      "market": "美股",
+      "algorithm": "trend_pullback",
+      "description": "标普500，趋势中回踩支撑",
+      "current_price": 2.526,
+      "last_close": 2.526,
+      "last_date": "2026-07-21",
+      "score": 60,
+      "level": "LIGHT_BUY",
+      "action": "轻仓买入",
+      "position_pct": 15,
+      "reasons": [
+        "处于上升趋势中（MA200之上）",
+        "精确回踩MA20（偏离+0.5%）",
+        "MACD柱线收窄，底背离"
+      ],
+      "indicators": {
+        "discount_rate": -5.58,
+        "rsi_14": 56.50557620817838,
+        "macd_hist": -0.0004999955746180116,
+        "dev_ma20": 0.48731974142217294,
+        "ma200": 2.4105250000000003,
+        "momentum_20": 0.8383233532934131,
+        "bb_percent_b": 0.6161287776972815
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh562500",
+      "etf_symbol": "562500",
+      "etf_name": "机器人ETF",
+      "sector": "机器人",
+      "market": "A股",
+      "algorithm": "volatility_breakout",
+      "description": "机器人产业，波动率突破★新增",
+      "current_price": 0.978,
+      "last_close": 0.978,
+      "last_date": "2026-07-21",
+      "score": 38,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "Z-score=-1.5"
+      ],
+      "indicators": {
+        "discount_rate": -0.18,
+        "rsi_14": 31.875,
+        "rsi_7": 22.222222222222186,
+        "bb_percent_b": 0.1150843792797248,
+        "atr_pct": 5.762489044697635,
+        "atr_rank": 96.66666666666667,
+        "bw_rank": 91.66666666666666,
+        "vol_ratio": 0.932348342419237,
+        "zscore_20": -1.5396624828811003
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh512660",
+      "etf_symbol": "512660",
+      "etf_name": "军工ETF",
+      "sector": "军工",
+      "market": "A股",
+      "algorithm": "event_driven",
+      "description": "军工板块，事件驱动+极端超卖",
+      "current_price": 1.09,
+      "last_close": 1.09,
+      "last_date": "2026-07-21",
+      "score": 38,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "高波动+严重偏离MA60"
+      ],
+      "indicators": {
+        "discount_rate": 0.2,
+        "rsi_14": 29.278350515463913,
+        "rsi_7": 13.409961685823802,
+        "zscore_20": -1.5369352172805941,
+        "vol_ratio": 1.2694799223613555,
+        "consec_down": 0,
+        "kdj_j": 6.976984303924244,
+        "bb_percent_b": 0.11576619567985144,
+        "dev_ma60": -15.967466303467944,
+        "atr_rank": 98.33333333333333
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh512980",
+      "etf_symbol": "512980",
+      "etf_name": "传媒ETF",
+      "sector": "传媒",
+      "market": "A股",
+      "algorithm": "momentum_pullback",
+      "description": "传媒板块，动量回踩策略",
+      "current_price": 0.801,
+      "last_close": 0.801,
+      "last_date": "2026-07-21",
+      "score": 34,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "回踩MA20（偏离-1.2%）"
+      ],
+      "indicators": {
+        "discount_rate": 0.04,
+        "rsi_14": 44.79638009049775,
+        "momentum_5": 2.168367346938771,
+        "momentum_20": -2.9090909090908945,
+        "dev_ma20": -1.226956039213243,
+        "vol_ratio": 0.9629132289347339,
+        "bb_percent_b": 0.33740440834367785
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh516160",
+      "etf_symbol": "516160",
+      "etf_name": "新能源ETF",
+      "sector": "新能源",
+      "market": "A股",
+      "algorithm": "volatility_breakout",
+      "description": "新能源板块，波动率突破策略",
+      "current_price": 2.403,
+      "last_close": 2.403,
+      "last_date": "2026-07-21",
+      "score": 28,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "RSI=17，极度超卖"
+      ],
+      "indicators": {
+        "discount_rate": -0.16,
+        "rsi_14": 17.452830188679258,
+        "rsi_7": 30.751708428245962,
+        "bb_percent_b": 0.19665105645442768,
+        "atr_pct": 3.804767849711669,
+        "atr_rank": 93.33333333333333,
+        "bw_rank": 98.33333333333333,
+        "vol_ratio": 1.1850757759715633,
+        "zscore_20": -1.2133957741822894
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh513310",
+      "etf_symbol": "513310",
+      "etf_name": "中韩半导体ETF",
+      "sector": "跨境半导体",
+      "market": "A股",
+      "algorithm": "premium_rate",
+      "description": "中韩半导体，跨境折溢价套利★新增",
+      "current_price": 4.989,
+      "last_close": 4.989,
+      "last_date": "2026-07-21",
+      "score": 20,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "溢价6.6%，不适宜买入",
+        "RSI=29，超卖"
+      ],
+      "indicators": {
+        "discount_rate": -6.64,
+        "rsi_14": 28.629032258064512,
+        "zscore_20": -1.3790159681527838,
+        "bb_percent_b": 0.1552460079618041,
+        "vol_ratio": 1.8981577474233524,
+        "consec_down": 0,
+        "dev_ma20": -14.95708648330763
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh510150",
+      "etf_symbol": "510150",
+      "etf_name": "消费ETF",
+      "sector": "消费",
+      "market": "A股",
+      "algorithm": "seasonal_value",
+      "description": "消费板块，季节性规律+超卖",
+      "current_price": 0.495,
+      "last_close": 0.495,
+      "last_date": "2026-07-21",
+      "score": 18,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "夏季淡季，超卖概率高"
+      ],
+      "indicators": {
+        "discount_rate": 0.04,
+        "month": 7,
+        "rsi_14": 59.4059405940594,
+        "momentum_5": 3.125,
+        "momentum_20": 8.552631578947366,
+        "kdj_j": 82.98606138959377,
+        "dev_ma20": 3.643216080402016,
+        "bb_percent_b": 0.8577714235803283,
+        "consec_down": 0
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh512690",
+      "etf_symbol": "512690",
+      "etf_name": "酒ETF",
+      "sector": "白酒",
+      "market": "A股",
+      "algorithm": "seasonal_value",
+      "description": "白酒板块，季节性+超卖策略",
+      "current_price": 0.425,
+      "last_close": 0.425,
+      "last_date": "2026-07-21",
+      "score": 18,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "夏季淡季，超卖概率高"
+      ],
+      "indicators": {
+        "discount_rate": -0.14,
+        "month": 7,
+        "rsi_14": 63.10679611650483,
+        "momentum_5": 7.323232323232309,
+        "momentum_20": 6.516290726817031,
+        "kdj_j": 93.43429825790176,
+        "dev_ma20": 6.130603071544502,
+        "bb_percent_b": 0.9591468555014696,
+        "consec_down": 1
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sz159782",
+      "etf_symbol": "159782",
+      "etf_name": "双创50ETF",
+      "sector": "中盘宽基",
+      "market": "A股",
+      "algorithm": "broad_reversal",
+      "description": "科创+创业板50，高波动适合超卖反弹",
+      "current_price": 1.239,
+      "last_close": 1.239,
+      "last_date": "2026-07-21",
+      "score": 8,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": -0.25,
+        "rsi_14": 35.81183611532627,
+        "rsi_7": 39.52254641909816,
+        "bb_percent_b": 0.2920316523738551,
+        "consec_down": 0,
+        "kdj_j": 33.07844653144662,
+        "vol_ratio": 1.9288539829728206,
+        "dev_ma20": -5.965391621129325
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh512800",
+      "etf_symbol": "512800",
+      "etf_name": "银行ETF",
+      "sector": "银行",
+      "market": "A股",
+      "algorithm": "financial_value",
+      "description": "银行板块，PB分位+股息率",
+      "current_price": 0.79,
+      "last_close": 0.79,
+      "last_date": "2026-07-21",
+      "score": 8,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": 0.09,
+        "rsi_14": 70.86614173228347,
+        "zscore_20": 1.2184938463606823,
+        "dev_ma60": 1.5141455892746136,
+        "dev_ma200": -0.9186968927350585,
+        "bb_percent_b": 0.8046234615901704,
+        "vol_ratio": 1.3917794660039127
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh515220",
+      "etf_symbol": "515220",
+      "etf_name": "煤炭ETF",
+      "sector": "煤炭",
+      "market": "A股",
+      "algorithm": "cycle_momentum",
+      "description": "煤炭板块，周期动量策略",
+      "current_price": 1.191,
+      "last_close": 1.191,
+      "last_date": "2026-07-21",
+      "score": 8,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": -0.3,
+        "rsi_14": 63.68876080691641,
+        "momentum_10": 5.585106382978733,
+        "momentum_20": 2.2317596566523656,
+        "dev_ma20": 5.207367165761235,
+        "kdj_j": 86.93045391591403,
+        "bb_percent_b": 0.8890864055408696,
+        "vol_ratio": 1.4375494391011243
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sz159562",
+      "etf_symbol": "159562",
+      "etf_name": "黄金股ETF",
+      "sector": "黄金",
+      "market": "A股",
+      "algorithm": "cycle_momentum",
+      "description": "黄金股票，周期动量策略★新增",
+      "current_price": 1.905,
+      "last_close": 1.905,
+      "last_date": "2026-07-21",
+      "score": 8,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": -0.11,
+        "rsi_14": 62.31884057971015,
+        "momentum_10": 3.984716157205237,
+        "momentum_20": 1.9807280513918668,
+        "dev_ma20": 4.710602979167805,
+        "kdj_j": 77.53839020765702,
+        "bb_percent_b": 0.838100783386461,
+        "vol_ratio": 1.052616066978313
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh512890",
+      "etf_symbol": "512890",
+      "etf_name": "红利低波ETF",
+      "sector": "红利",
+      "market": "A股",
+      "algorithm": "dividend_value",
+      "description": "红利低波策略，高股息+低波动",
+      "current_price": 1.16,
+      "last_close": 1.172,
+      "last_date": "2026-07-20",
+      "score": 5,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": 0.19,
+        "rsi_14": 80.34682080924854,
+        "zscore_20": 2.168716297067945,
+        "dev_ma200": -0.06395224898742516,
+        "consec_down": 0,
+        "bb_percent_b": 1.0421790742669863,
+        "vol_ratio": 1.4598099809564007
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sz159502",
+      "etf_symbol": "159502",
+      "etf_name": "标普生物科技ETF",
+      "sector": "生物科技",
+      "market": "美股",
+      "algorithm": "support_rebound",
+      "description": "标普生物科技，支撑反弹策略★新增",
+      "current_price": 1.528,
+      "last_close": 1.528,
+      "last_date": "2026-07-21",
+      "score": 5,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": -0.9,
+        "rsi_14": 43.569131832797424,
+        "macd_hist": -0.023843625294156304,
+        "support_60d": 1.272,
+        "dev_support": 20.125786163522015,
+        "bb_percent_b": 0.22898125702403202,
+        "zscore_20": -1.0840749719038716,
+        "kdj_j": 3.5521965108215596
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh510300",
+      "etf_symbol": "510300",
+      "etf_name": "沪深300ETF",
+      "sector": "大盘宽基",
+      "market": "A股",
+      "algorithm": "broad_reversal",
+      "description": "沪深300大盘蓝筹，均值回归特性强",
+      "current_price": 4.787,
+      "last_close": 4.787,
+      "last_date": "2026-07-21",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": 0.01,
+        "rsi_14": 40.27649769585253,
+        "rsi_7": 46.64536741214059,
+        "bb_percent_b": 0.3583090585765389,
+        "consec_down": 0,
+        "kdj_j": 48.87797133629634,
+        "vol_ratio": 1.6431146666848764,
+        "dev_ma20": -1.3681130753698396
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sz159928",
+      "etf_symbol": "159928",
+      "etf_name": "消费ETF汇添富",
+      "sector": "大盘宽基",
+      "market": "A股",
+      "algorithm": "broad_reversal",
+      "description": "消费板块宽基，均值回归策略",
+      "current_price": 0.669,
+      "last_close": 0.676,
+      "last_date": "2026-07-20",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": -0.09,
+        "rsi_14": 72.5925925925926,
+        "rsi_7": 84.52380952380952,
+        "bb_percent_b": 1.091645014254501,
+        "consec_down": 0,
+        "kdj_j": 99.9664013512978,
+        "vol_ratio": 1.4782085547656565,
+        "dev_ma20": 7.140026943497905
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh513050",
+      "etf_symbol": "513050",
+      "etf_name": "中概互联ETF",
+      "sector": "中概互联",
+      "market": "美股",
+      "algorithm": "extreme_reversal",
+      "description": "中概互联网，极端反转策略",
+      "current_price": 1.132,
+      "last_close": 1.132,
+      "last_date": "2026-07-21",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": 0.82,
+        "rsi_14": 76.81159420289848,
+        "rsi_7": 62.499999999999915,
+        "zscore_20": 1.2806419154044724,
+        "bb_percent_b": 0.8201604788511184,
+        "vol_ratio": 1.0723557764212044,
+        "consec_down": 1,
+        "dev_ma60": 1.6675148938718038,
+        "kdj_j": 70.06837664501202
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh512480",
+      "etf_symbol": "512480",
+      "etf_name": "半导体ETF",
+      "sector": "科技硬件",
+      "market": "A股",
+      "algorithm": "momentum_pullback",
+      "description": "半导体芯片，高动量回踩买入",
+      "current_price": 1.144,
+      "last_close": 1.144,
+      "last_date": "2026-07-21",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "20日动量为负，趋势向下"
+      ],
+      "indicators": {
+        "discount_rate": 2.03,
+        "rsi_14": 11.211729193617927,
+        "momentum_5": -12.5382262996942,
+        "momentum_20": -54.45859872611465,
+        "dev_ma20": -36.716913290001386,
+        "vol_ratio": 1.7453279379800948,
+        "bb_percent_b": 0.2848483427632706
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh515880",
+      "etf_symbol": "515880",
+      "etf_name": "通信ETF",
+      "sector": "通信",
+      "market": "A股",
+      "algorithm": "momentum_pullback",
+      "description": "通信设备板块，动量回踩策略",
+      "current_price": 0.701,
+      "last_close": 0.701,
+      "last_date": "2026-07-21",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "20日动量为负，趋势向下"
+      ],
+      "indicators": {
+        "discount_rate": -0.14,
+        "rsi_14": 11.680482290881685,
+        "momentum_5": -10.128205128205137,
+        "momentum_20": -60.9253065774805,
+        "dev_ma20": -38.308545278535604,
+        "vol_ratio": 1.7689276148554285,
+        "bb_percent_b": 0.28421495957570025
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sz159537",
+      "etf_symbol": "159537",
+      "etf_name": "信创ETF",
+      "sector": "信创",
+      "market": "A股",
+      "algorithm": "momentum_pullback",
+      "description": "信息技术应用创新，动量回踩",
+      "current_price": 1.026,
+      "last_close": 1.026,
+      "last_date": "2026-07-21",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "20日动量为负，趋势向下"
+      ],
+      "indicators": {
+        "discount_rate": -0.15,
+        "rsi_14": 34.07643312101911,
+        "momentum_5": -7.816711590296488,
+        "momentum_20": -52.587800369685766,
+        "dev_ma20": -17.111003393116807,
+        "vol_ratio": 1.215339413425137,
+        "bb_percent_b": 0.3625189316575562
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sz159992",
+      "etf_symbol": "159992",
+      "etf_name": "创新药ETF",
+      "sector": "创新药",
+      "market": "A股",
+      "algorithm": "support_rebound",
+      "description": "创新药板块，支撑位反弹",
+      "current_price": 0.879,
+      "last_close": 0.87,
+      "last_date": "2026-07-20",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": -0.06,
+        "rsi_14": 59.88023952095808,
+        "macd_hist": 0.0031288668400129525,
+        "support_60d": 0.696,
+        "dev_support": 26.293103448275872,
+        "bb_percent_b": 0.6981958028406836,
+        "zscore_20": 0.7927832113627349,
+        "kdj_j": 46.509068752983424
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh512000",
+      "etf_symbol": "512000",
+      "etf_name": "券商ETF",
+      "sector": "券商",
+      "market": "A股",
+      "algorithm": "financial_value",
+      "description": "券商板块，PB分位+RSI超卖",
+      "current_price": 0.536,
+      "last_close": 0.536,
+      "last_date": "2026-07-21",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [],
+      "indicators": {
+        "discount_rate": 0.0,
+        "rsi_14": 37.71929824561407,
+        "zscore_20": -0.1881003733797219,
+        "dev_ma60": 3.8524881325281815,
+        "dev_ma200": -2.5613990437928225,
+        "bb_percent_b": 0.4529749066550695,
+        "vol_ratio": 0.7616974985973197
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh512400",
+      "etf_symbol": "512400",
+      "etf_name": "有色金属ETF",
+      "sector": "有色金属",
+      "market": "A股",
+      "algorithm": "cycle_momentum",
+      "description": "有色金属，周期动量策略",
+      "current_price": 1.71,
+      "last_close": 1.71,
+      "last_date": "2026-07-21",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "中期动量负，周期向下"
+      ],
+      "indicators": {
+        "discount_rate": -0.05,
+        "rsi_14": 38.65131578947366,
+        "momentum_10": -5.15806988352745,
+        "momentum_20": -13.461538461538458,
+        "dev_ma20": -4.698211001504779,
+        "kdj_j": 39.384037831707104,
+        "bb_percent_b": 0.2799719751344532,
+        "vol_ratio": 0.9825021763489077
+      },
+      "run_time": "2026-07-21 21:33:37"
+    },
+    {
+      "etf_code": "sh560710",
+      "etf_symbol": "560710",
+      "etf_name": "船舶ETF",
+      "sector": "船舶",
+      "market": "A股",
+      "algorithm": "cycle_momentum",
+      "description": "船舶制造，周期动量策略★新增",
+      "current_price": 0.833,
+      "last_close": 0.833,
+      "last_date": "2026-07-21",
+      "score": 0,
+      "level": "WAIT",
+      "action": "不买入",
+      "position_pct": 0,
+      "reasons": [
+        "中期动量负，周期向下"
+      ],
+      "indicators": {
+        "discount_rate": 0.17,
+        "rsi_14": 39.62962962962964,
+        "momentum_10": -7.341490545050067,
+        "momentum_20": -10.430107526881727,
+        "dev_ma20": -4.751014807615342,
+        "kdj_j": 5.229559213684389,
+        "bb_percent_b": 0.18021088017348552,
+        "vol_ratio": 0.7209994858727916
+      },
+      "run_time": "2026-07-21 21:33:37"
+    }
+  ],
+  "errors": [],
+  "backtest_summary": {
+    "total_signals": 827,
+    "total_wins": 615,
+    "total_win_rate": 74.4,
+    "avg_return_3d": 0.19,
+    "avg_max_return": 1.87,
+    "by_algorithm": {
+      "dividend_value": {
+        "total_signals": 37,
+        "wins": 26,
+        "win_rate": 70.3,
+        "avg_return_3d": -0.03,
+        "avg_max_return": 1.16,
+        "etfs": [
+          "红利低波ETF"
+        ]
+      },
+      "broad_reversal": {
+        "total_signals": 95,
+        "wins": 74,
+        "win_rate": 77.9,
+        "avg_return_3d": 0.25,
+        "avg_max_return": 1.82,
+        "etfs": [
+          "消费ETF汇添富",
+          "沪深300ETF",
+          "双创50ETF"
+        ]
+      },
+      "trend_pullback": {
+        "total_signals": 222,
+        "wins": 141,
+        "win_rate": 63.5,
+        "avg_return_3d": 0.05,
+        "avg_max_return": 1.23,
+        "etfs": [
+          "标普500ETF",
+          "纳指ETF"
+        ]
+      },
+      "extreme_reversal": {
+        "total_signals": 18,
+        "wins": 16,
+        "win_rate": 88.9,
+        "avg_return_3d": 1.07,
+        "avg_max_return": 3.49,
+        "etfs": [
+          "中概互联ETF"
+        ]
+      },
+      "momentum_pullback": {
+        "total_signals": 50,
+        "wins": 44,
+        "win_rate": 88.0,
+        "avg_return_3d": 1.94,
+        "avg_max_return": 4.16,
+        "etfs": [
+          "信创ETF",
+          "传媒ETF",
+          "半导体ETF",
+          "通信ETF"
+        ]
+      },
+      "premium_rate": {
+        "total_signals": 3,
+        "wins": 3,
+        "win_rate": 100.0,
+        "avg_return_3d": 4.96,
+        "avg_max_return": 6.13,
+        "etfs": [
+          "中韩半导体ETF"
+        ]
+      },
+      "support_rebound": {
+        "total_signals": 95,
+        "wins": 69,
+        "win_rate": 72.6,
+        "avg_return_3d": -0.25,
+        "avg_max_return": 1.81,
+        "etfs": [
+          "标普生物科技ETF",
+          "创新药ETF"
+        ]
+      },
+      "seasonal_value": {
+        "total_signals": 118,
+        "wins": 90,
+        "win_rate": 76.3,
+        "avg_return_3d": 0.05,
+        "avg_max_return": 1.87,
+        "etfs": [
+          "酒ETF",
+          "消费ETF"
+        ]
+      },
+      "financial_value": {
+        "total_signals": 87,
+        "wins": 73,
+        "win_rate": 83.9,
+        "avg_return_3d": 0.42,
+        "avg_max_return": 2.03,
+        "etfs": [
+          "银行ETF",
+          "券商ETF"
+        ]
+      },
+      "volatility_breakout": {
+        "total_signals": 81,
+        "wins": 62,
+        "win_rate": 76.5,
+        "avg_return_3d": -0.57,
+        "avg_max_return": 1.77,
+        "etfs": [
+          "新能源ETF",
+          "机器人ETF"
+        ]
+      },
+      "cycle_momentum": {
+        "total_signals": 19,
+        "wins": 16,
+        "win_rate": 84.2,
+        "avg_return_3d": 0.57,
+        "avg_max_return": 2.6,
+        "etfs": [
+          "有色金属ETF",
+          "煤炭ETF",
+          "黄金股ETF"
+        ]
+      },
+      "event_driven": {
+        "total_signals": 2,
+        "wins": 1,
+        "win_rate": 50.0,
+        "avg_return_3d": 4.02,
+        "avg_max_return": 4.81,
+        "etfs": [
+          "军工ETF"
+        ]
+      }
+    },
+    "by_level": {
+      "LIGHT_BUY": {
+        "total_signals": 626,
+        "wins": 466,
+        "win_rate": 74.4,
+        "avg_return_3d": 0.34
+      },
+      "BUY": {
+        "total_signals": 152,
+        "wins": 106,
+        "win_rate": 69.7,
+        "avg_return_3d": -0.35
+      },
+      "STRONG_BUY": {
+        "total_signals": 49,
+        "wins": 43,
+        "win_rate": 87.8,
+        "avg_return_3d": -0.07
+      }
+    },
+    "by_score_bin": {
+      "60-70": {
+        "total_signals": 503,
+        "wins": 369,
+        "win_rate": 73.4,
+        "avg_return_3d": 0.32
+      },
+      "70-80": {
+        "total_signals": 207,
+        "wins": 153,
+        "win_rate": 73.9,
+        "avg_return_3d": 0.2
+      },
+      "80-90": {
+        "total_signals": 100,
+        "wins": 77,
+        "win_rate": 77.0,
+        "avg_return_3d": -0.52
+      },
+      "90-101": {
+        "total_signals": 17,
+        "wins": 16,
+        "win_rate": 94.1,
+        "avg_return_3d": 0.22
+      }
+    }
+  },
+  "report_path": "D:\\workspace\\strat.all\\reports\\signal_report_20260721.html"
+}

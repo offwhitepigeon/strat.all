@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Data cache (K-line pkl + oil price pkl, can be regenerated)
+data/cache/
+
+# Logs (runtime generated)
+logs/
+
+# WorkBuddy internal
+.workbuddy/
+
+# Secrets - keep passwords private
+mail_config.json
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

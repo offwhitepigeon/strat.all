@@ -1,0 +1,64 @@
+{
+  "original": {
+    "n": 45,
+    "wins": 34,
+    "losses": 11,
+    "win_rate": 75.6,
+    "avg_return": 0.8,
+    "avg_max_return": 2.39,
+    "std_return": 3.14,
+    "sharpe": 0.25,
+    "best": 9.04,
+    "worst": -5.94,
+    "worst_max": -2.24,
+    "avg_win_max": 3.47,
+    "avg_loss": -2.81
+  },
+  "variants": {
+    "增强版(宽回踩+KDJ)": {
+      "n": 40,
+      "wins": 28,
+      "losses": 12,
+      "win_rate": 70.0,
+      "avg_return": 0.3,
+      "avg_max_return": 2.08,
+      "std_return": 3.35,
+      "sharpe": 0.09,
+      "best": 9.04,
+      "worst": -5.94,
+      "worst_max": -2.14,
+      "avg_win_max": 3.32,
+      "avg_loss": -2.72
+    },
+    "量价版(放量+KDJ)": {
+      "n": 9,
+      "wins": 6,
+      "losses": 3,
+      "win_rate": 66.7,
+      "avg_return": 1.2,
+      "avg_max_return": 2.54,
+      "std_return": 3.81,
+      "sharpe": 0.31,
+      "best": 9.04,
+      "worst": -5.94,
+      "worst_max": -2.03,
+      "avg_win_max": 4.23,
+      "avg_loss": -2.89
+    },
+    "混合版(宽松+KDJ+放量)": {
+      "n": 8,
+      "wins": 7,
+      "losses": 1,
+      "win_rate": 87.5,
+      "avg_return": 2.08,
+      "avg_max_return": 3.32,
+      "std_return": 2.92,
+      "sharpe": 0.71,
+      "best": 9.04,
+      "worst": -2.12,
+      "worst_max": -2.03,
+      "avg_win_max": 4.08,
+      "avg_loss": -2.12
+    }
+  }
+}

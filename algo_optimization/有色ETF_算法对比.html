@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>有色金属ETF算法对比</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif; background:#f5f6fa; color:#2c3e50; padding:20px; line-height:1.6; }
+        .header { background:linear-gradient(135deg,#1a1a2e,#16213e); color:white; padding:25px; border-radius:12px; margin-bottom:20px; }
+        .header h1 { font-size:22px; margin-bottom:8px; }
+        .header .meta { opacity:0.8; font-size:13px; }
+        .conclusion { background:#e67e22; color:white; padding:15px 20px; border-radius:10px; margin-bottom:20px; font-size:15px; }
+        .section { background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow-x:auto; }
+        .section h2 { font-size:17px; margin-bottom:15px; color:#2c3e50; border-bottom:2px solid #ecf0f1; padding-bottom:10px; }
+        table { width:100%; border-collapse:collapse; font-size:13px; }
+        th { background:#f8f9fa; padding:10px; text-align:left; border-bottom:2px solid #dee2e6; color:#495057; white-space:nowrap; }
+        td { padding:8px 10px; border-bottom:1px solid #ecf0f1; }
+        tr.win { background:#f0fff4; }
+        tr.loss { background:#fff5f5; }
+        .win-cell { font-weight:bold; text-align:center; }
+        tr.win .win-cell { color:#27ae60; }
+        tr.loss .win-cell { color:#e74c3c; }
+        tr.best-row { background:#fff3cd; }
+        tr.current-row { background:#e8f4fd; }
+        .reasons-cell { font-size:11px; color:#555; max-width:300px; }
+        .footer { text-align:center; padding:20px; color:#95a5a6; font-size:12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>有色金属ETF 全算法对比回测</h1>
+        <div class="meta">
+            ETF: sh512400 有色金属ETF |
+            回测区间: 2024-01-01 ~ 最新 |
+            信号阈值: &ge;60分 |
+            胜率定义: T+3最高价收益 &gt; 0.5% |
+            算法数: 13种
+        </div>
+    </div>
+
+    <div class="conclusion">最佳算法为 extreme_reversal (胜率100.0%, 9信号), 当前 cycle_momentum (胜率50.0%, 2信号), 建议考虑更换或优化</div>
+
+    <div class="section">
+        <h2>算法对比 (按胜率降序, [当前]=cycle_momentum, [最佳]=推荐)</h2>
+        <table>
+            <tr>
+                <th>算法</th><th>信号数</th><th>胜利</th><th>胜率</th>
+                <th>平均收盘收益</th><th>平均最大收益</th><th>平均信号分</th>
+                <th>最佳最大收益</th><th>最差收盘收益</th>
+            </tr>
+            
+            <tr class="best-row" >
+                <td><strong>extreme_reversal</strong> [最佳]</td>
+                <td>9</td>
+                <td>9</td>
+                <td style="color:#27ae60;font-weight:bold;">100.0%</td>
+                <td style="color:#27ae60;">+3.88%</td>
+                <td style="color:#27ae60;">+5.77%</td>
+                <td>71.6</td>
+                <td style="color:#27ae60;">+12.38%</td>
+                <td style="color:#e74c3c;">-2.67%</td>
+            </tr>
+            <tr  >
+                <td><strong>premium_rate</strong></td>
+                <td>6</td>
+                <td>6</td>
+                <td style="color:#27ae60;font-weight:bold;">100.0%</td>
+                <td style="color:#27ae60;">+4.10%</td>
+                <td style="color:#27ae60;">+5.76%</td>
+                <td>63.0</td>
+                <td style="color:#27ae60;">+8.39%</td>
+                <td style="color:#e74c3c;">-2.67%</td>
+            </tr>
+            <tr  >
+                <td><strong>financial_value</strong></td>
+                <td>26</td>
+                <td>24</td>
+                <td style="color:#27ae60;font-weight:bold;">92.3%</td>
+                <td style="color:#27ae60;">+2.59%</td>
+                <td style="color:#27ae60;">+4.49%</td>
+                <td>73.8</td>
+                <td style="color:#27ae60;">+12.38%</td>
+                <td style="color:#e74c3c;">-4.88%</td>
+            </tr>
+            <tr  >
+                <td><strong>volatility_breakout</strong></td>
+                <td>24</td>
+                <td>22</td>
+                <td style="color:#27ae60;font-weight:bold;">91.7%</td>
+                <td style="color:#27ae60;">+2.46%</td>
+                <td style="color:#27ae60;">+3.78%</td>
+                <td>66.2</td>
+                <td style="color:#27ae60;">+12.38%</td>
+                <td style="color:#e74c3c;">-2.67%</td>
+            </tr>
+            <tr  >
+                <td><strong>seasonal_value</strong></td>
+                <td>31</td>
+                <td>28</td>
+                <td style="color:#27ae60;font-weight:bold;">90.3%</td>
+                <td style="color:#27ae60;">+1.02%</td>
+                <td style="color:#27ae60;">+3.57%</td>
+                <td>74.2</td>
+                <td style="color:#27ae60;">+12.38%</td>
+                <td style="color:#e74c3c;">-12.14%</td>
+            </tr>
+            <tr  >
+                <td><strong>dividend_value</strong></td>
+                <td>42</td>
+                <td>37</td>
+                <td style="color:#27ae60;font-weight:bold;">88.1%</td>
+                <td style="color:#27ae60;">+1.39%</td>
+                <td style="color:#27ae60;">+3.47%</td>
+                <td>75.4</td>
+                <td style="color:#27ae60;">+12.38%</td>
+                <td style="color:#e74c3c;">-8.32%</td>
+            </tr>
+            <tr  >
+                <td><strong>support_rebound</strong></td>
+                <td>46</td>
+                <td>39</td>
+                <td style="color:#27ae60;font-weight:bold;">84.8%</td>
+                <td style="color:#27ae60;">+1.28%</td>
+                <td style="color:#27ae60;">+3.17%</td>
+                <td>73.2</td>
+                <td style="color:#27ae60;">+12.38%</td>
+                <td style="color:#e74c3c;">-4.88%</td>
+            </tr>
+            <tr  >
+                <td><strong>gold_pair_reversal</strong></td>
+                <td>32</td>
+                <td>26</td>
+                <td style="color:#27ae60;font-weight:bold;">81.2%</td>
+                <td style="color:#27ae60;">+1.28%</td>
+                <td style="color:#27ae60;">+3.19%</td>
+                <td>72.6</td>
+                <td style="color:#27ae60;">+12.38%</td>
+                <td style="color:#e74c3c;">-5.31%</td>
+            </tr>
+            <tr  >
+                <td><strong>momentum_pullback</strong></td>
+                <td>10</td>
+                <td>8</td>
+                <td style="color:#27ae60;font-weight:bold;">80.0%</td>
+                <td style="color:#e74c3c;">-0.17%</td>
+                <td style="color:#27ae60;">+1.72%</td>
+                <td>65.6</td>
+                <td style="color:#27ae60;">+3.72%</td>
+                <td style="color:#e74c3c;">-3.91%</td>
+            </tr>
+            <tr  >
+                <td><strong>oil_pair_reversal</strong></td>
+                <td>43</td>
+                <td>33</td>
+                <td style="color:#27ae60;font-weight:bold;">76.7%</td>
+                <td style="color:#e74c3c;">-0.20%</td>
+                <td style="color:#27ae60;">+2.69%</td>
+                <td>67.7</td>
+                <td style="color:#27ae60;">+12.38%</td>
+                <td style="color:#e74c3c;">-12.14%</td>
+            </tr>
+            <tr  >
+                <td><strong>trend_pullback</strong></td>
+                <td>70</td>
+                <td>53</td>
+                <td style="color:#27ae60;font-weight:bold;">75.7%</td>
+                <td style="color:#27ae60;">+0.05%</td>
+                <td style="color:#27ae60;">+1.84%</td>
+                <td>63.8</td>
+                <td style="color:#27ae60;">+7.68%</td>
+                <td style="color:#e74c3c;">-10.10%</td>
+            </tr>
+            <tr  >
+                <td><strong>broad_reversal</strong></td>
+                <td>22</td>
+                <td>16</td>
+                <td style="color:#e67e22;font-weight:bold;">72.7%</td>
+                <td style="color:#27ae60;">+0.68%</td>
+                <td style="color:#27ae60;">+2.71%</td>
+                <td>73.6</td>
+                <td style="color:#27ae60;">+12.38%</td>
+                <td style="color:#e74c3c;">-12.14%</td>
+            </tr>
+            <tr  class="current-row">
+                <td><strong>cycle_momentum</strong> [当前]</td>
+                <td>2</td>
+                <td>1</td>
+                <td style="color:#e74c3c;font-weight:bold;">50.0%</td>
+                <td style="color:#e74c3c;">-2.60%</td>
+                <td style="color:#27ae60;">+1.17%</td>
+                <td>63.0</td>
+                <td style="color:#27ae60;">+3.03%</td>
+                <td style="color:#e74c3c;">-4.06%</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>当前算法 vs 最佳算法 - 信号明细</h2>
+        <table>
+            <tr>
+                <th>算法</th><th>日期</th><th>信号分</th><th>买入价</th>
+                <th>胜</th><th>最大收益</th><th>收盘收益</th><th>达标天数</th><th>理由</th>
+            </tr>
+            
+            <tr class="loss">
+                <td>cycle_momentum</td>
+                <td>2024-09-06</td>
+                <td style="font-weight:bold;">63.0</td>
+                <td>0.877</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.68%</td>
+                <td style="color:#e74c3c;">-1.14%</td>
+                <td>0日</td>
+                <td class="reasons-cell">RSI=29，超卖; KDJ超卖(J=-5)</td>
+            </tr>
+            <tr class="win">
+                <td>cycle_momentum</td>
+                <td>2026-07-08</td>
+                <td style="font-weight:bold;">63.0</td>
+                <td>1.750</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.03%</td>
+                <td style="color:#e74c3c;">-4.06%</td>
+                <td>1日</td>
+                <td class="reasons-cell">RSI=28，超卖; KDJ超卖(J=-2)</td>
+            </tr>
+            <tr class="win">
+                <td>extreme_reversal</td>
+                <td>2024-01-22</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.850</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.88%</td>
+                <td style="color:#27ae60;">+5.53%</td>
+                <td>1日</td>
+                <td class="reasons-cell">RSI=19，极端超卖; Z-score=-3.0，极端偏离（3σ）</td>
+            </tr>
+            <tr class="win">
+                <td>extreme_reversal</td>
+                <td>2024-02-05</td>
+                <td style="font-weight:bold;">61.0</td>
+                <td>0.800</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+12.38%</td>
+                <td style="color:#27ae60;">+10.62%</td>
+                <td>1日</td>
+                <td class="reasons-cell">RSI=22，严重超卖; Z-score=-2.1，严重偏离</td>
+            </tr>
+            <tr class="win">
+                <td>extreme_reversal</td>
+                <td>2024-07-25</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.913</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.40%</td>
+                <td style="color:#27ae60;">+1.31%</td>
+                <td>1日</td>
+                <td class="reasons-cell">Z-score=-2.5，严重偏离; 跌破布林带下轨，极端偏离</td>
+            </tr>
+            <tr class="win">
+                <td>extreme_reversal</td>
+                <td>2024-09-10</td>
+                <td style="font-weight:bold;">63.0</td>
+                <td>0.858</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.56%</td>
+                <td style="color:#27ae60;">+0.58%</td>
+                <td>1日</td>
+                <td class="reasons-cell">RSI=21，严重超卖; Z-score=-2.1，严重偏离</td>
+            </tr>
+            <tr class="win">
+                <td>extreme_reversal</td>
+                <td>2025-04-07</td>
+                <td style="font-weight:bold;">85.0</td>
+                <td>0.948</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.81%</td>
+                <td style="color:#27ae60;">+6.54%</td>
+                <td>1日</td>
+                <td class="reasons-cell">RSI=18，极端超卖; Z-score=-3.9，极端偏离（3σ）</td>
+            </tr>
+            <tr class="win">
+                <td>extreme_reversal</td>
+                <td>2025-04-08</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.961</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+6.66%</td>
+                <td style="color:#27ae60;">+5.93%</td>
+                <td>1日</td>
+                <td class="reasons-cell">RSI=17，极端超卖; Z-score=-2.6，严重偏离</td>
+            </tr>
+            <tr class="win">
+                <td>extreme_reversal</td>
+                <td>2026-03-19</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>1.944</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.75%</td>
+                <td style="color:#e74c3c;">-2.67%</td>
+                <td>1日</td>
+                <td class="reasons-cell">RSI=16，极端超卖; Z-score=-2.5，严重偏离</td>
+            </tr>
+            <tr class="win">
+                <td>extreme_reversal</td>
+                <td>2026-03-20</td>
+                <td style="font-weight:bold;">80.0</td>
+                <td>1.917</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.08%</td>
+                <td style="color:#27ae60;">+1.83%</td>
+                <td>3日</td>
+                <td class="reasons-cell">RSI=4，极度超卖（罕见）; Z-score=-2.2，严重偏离</td>
+            </tr>
+            <tr class="win">
+                <td>extreme_reversal</td>
+                <td>2026-03-23</td>
+                <td style="font-weight:bold;">85.0</td>
+                <td>1.823</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+8.39%</td>
+                <td style="color:#27ae60;">+5.27%</td>
+                <td>1日</td>
+                <td class="reasons-cell">RSI=4，极度超卖（罕见）; Z-score=-2.3，严重偏离</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>有色金属ETF算法优化 | 13种算法对比 | T+3胜率回测</p>
+        <p>本报告仅供参考，不构成投资建议。</p>
+    </div>
+</body>
+</html>

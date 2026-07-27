@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>新能源ETF dividend_value 优化对比</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif; background:#f5f6fa; color:#2c3e50; padding:20px; line-height:1.6; }
+        .header { background:linear-gradient(135deg,#1a1a2e,#16213e); color:white; padding:25px; border-radius:12px; margin-bottom:20px; }
+        .header h1 { font-size:22px; margin-bottom:8px; }
+        .header .meta { opacity:0.8; font-size:13px; }
+        .conclusion { background:#27ae60; color:white; padding:15px 20px; border-radius:10px; margin-bottom:20px; font-size:15px; }
+        .section { background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow-x:auto; }
+        .section h2 { font-size:17px; margin-bottom:15px; color:#2c3e50; border-bottom:2px solid #ecf0f1; padding-bottom:10px; }
+        table { width:100%; border-collapse:collapse; font-size:13px; }
+        th { background:#f8f9fa; padding:10px; text-align:left; border-bottom:2px solid #dee2e6; color:#495057; white-space:nowrap; }
+        td { padding:8px 10px; border-bottom:1px solid #ecf0f1; }
+        tr.win { background:#f0fff4; }
+        tr.loss { background:#fff5f5; }
+        .win-cell { font-weight:bold; text-align:center; }
+        tr.win .win-cell { color:#27ae60; }
+        tr.loss .win-cell { color:#e74c3c; }
+        .reasons-cell { font-size:11px; color:#555; max-width:300px; }
+        .footer { text-align:center; padding:20px; color:#95a5a6; font-size:12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>新能源ETF dividend_value 优化对比</h1>
+        <div class="meta">
+            ETF: sh516160 新能源ETF | 数据: 1321条, 2021-02-04~2026-07-22 |
+            回测: 2024-01-01~最新 | 信号阈值: &ge;60分 |
+            胜率定义: T+3最高价收益 &gt; 0.5%
+        </div>
+    </div>
+    <div class="conclusion">最优变体: C. 混合版 (胜率78.2% vs 原版75.0%), 建议采用</div>
+    <div class="section">
+        <h2>算法对比摘要 (按胜率降序)</h2>
+        <table>
+            <tr><th>算法</th><th>信号</th><th>胜利</th><th>胜率</th>
+            <th>均收益</th><th>均最大</th><th>均分</th><th>Sharpe</th>
+            <th>最佳</th><th>最差</th></tr>
+            
+            <tr>
+                <td><strong>C. 混合版</strong> [最优]</td>
+                <td>78</td>
+                <td>61</td>
+                <td style="color:#27ae60;font-weight:bold;">78.2%</td>
+                <td style="color:#27ae60;">+2.33%</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.87%</td>
+                <td>74.6</td>
+                <td>0.820</td>
+                <td style="color:#27ae60;">+228.77%</td>
+                <td style="color:#e74c3c;">-11.49%</td>
+            </tr>
+            <tr>
+                <td><strong>A. 趋势过滤版</strong></td>
+                <td>76</td>
+                <td>58</td>
+                <td style="color:#27ae60;font-weight:bold;">76.3%</td>
+                <td style="color:#27ae60;">+2.00%</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.68%</td>
+                <td>74.4</td>
+                <td>0.684</td>
+                <td style="color:#27ae60;">+228.77%</td>
+                <td style="color:#e74c3c;">-9.98%</td>
+            </tr>
+            <tr>
+                <td><strong>B. 宽阈值版</strong></td>
+                <td>86</td>
+                <td>65</td>
+                <td style="color:#27ae60;font-weight:bold;">75.6%</td>
+                <td style="color:#27ae60;">+1.90%</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.57%</td>
+                <td>76.3</td>
+                <td>0.736</td>
+                <td style="color:#27ae60;">+228.77%</td>
+                <td style="color:#e74c3c;">-11.49%</td>
+            </tr>
+            <tr>
+                <td><strong>dividend_value (原版)</strong> [基准]</td>
+                <td>76</td>
+                <td>57</td>
+                <td style="color:#27ae60;font-weight:bold;">75.0%</td>
+                <td style="color:#27ae60;">+2.19%</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.85%</td>
+                <td>77.1</td>
+                <td>0.749</td>
+                <td style="color:#27ae60;">+228.77%</td>
+                <td style="color:#e74c3c;">-9.98%</td>
+            </tr>
+        </table>
+    </div>
+    <div class="section">
+        <h2>逐年对比</h2>
+        <table>
+            <tr><th>算法</th><th>年份</th><th>信号</th><th>胜率</th><th>均收益</th></tr>
+            
+                <tr>
+                    <td>C. 混合版</td><td>2024</td><td>54</td>
+                    <td style="color:#27ae60;">81%</td>
+                    <td>+3.64%</td>
+                </tr>
+                <tr>
+                    <td>C. 混合版</td><td>2025</td><td>12</td>
+                    <td style="color:#27ae60;">75%</td>
+                    <td>-0.84%</td>
+                </tr>
+                <tr>
+                    <td>C. 混合版</td><td>2026</td><td>12</td>
+                    <td style="color:#e67e22;">67%</td>
+                    <td>-0.36%</td>
+                </tr>
+                <tr>
+                    <td>A. 趋势过滤版</td><td>2024</td><td>52</td>
+                    <td style="color:#27ae60;">81%</td>
+                    <td>+3.59%</td>
+                </tr>
+                <tr>
+                    <td>A. 趋势过滤版</td><td>2025</td><td>10</td>
+                    <td style="color:#27ae60;">80%</td>
+                    <td>-0.14%</td>
+                </tr>
+                <tr>
+                    <td>A. 趋势过滤版</td><td>2026</td><td>14</td>
+                    <td style="color:#e74c3c;">57%</td>
+                    <td>-2.40%</td>
+                </tr>
+                <tr>
+                    <td>B. 宽阈值版</td><td>2024</td><td>52</td>
+                    <td style="color:#27ae60;">79%</td>
+                    <td>+3.89%</td>
+                </tr>
+                <tr>
+                    <td>B. 宽阈值版</td><td>2025</td><td>15</td>
+                    <td style="color:#27ae60;">80%</td>
+                    <td>-0.76%</td>
+                </tr>
+                <tr>
+                    <td>B. 宽阈值版</td><td>2026</td><td>19</td>
+                    <td style="color:#e67e22;">63%</td>
+                    <td>-1.41%</td>
+                </tr>
+                <tr>
+                    <td>dividend_value (原版)</td><td>2024</td><td>50</td>
+                    <td style="color:#27ae60;">82%</td>
+                    <td>+4.15%</td>
+                </tr>
+                <tr>
+                    <td>dividend_value (原版)</td><td>2025</td><td>10</td>
+                    <td style="color:#27ae60;">80%</td>
+                    <td>-0.14%</td>
+                </tr>
+                <tr>
+                    <td>dividend_value (原版)</td><td>2026</td><td>16</td>
+                    <td style="color:#e74c3c;">50%</td>
+                    <td>-2.50%</td>
+                </tr>
+        </table>
+    </div>
+    <div class="section">
+        <h2>原版 vs 最优变体 - 信号明细</h2>
+        <table>
+            <tr><th>算法</th><th>日期</th><th>信号分</th><th>买入价</th>
+            <th>胜</th><th>最大收益</th><th>收盘收益</th><th>达标天数</th><th>理由</th></tr>
+            
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-01-29</td><td>70.0</td>
+                <td>0.576</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.87%</td>
+                <td style="color:#e74c3c;">-3.99%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-24.7%，严重超卖; Z-score=-2.9，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-01-30</td><td>78.0</td>
+                <td>0.562</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.60%</td>
+                <td style="color:#e74c3c;">-4.98%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=34，偏低; 40周均线偏离-26.3%，严重超卖; Z-score=-2.8，严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-01-31</td><td>92.0</td>
+                <td>0.551</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.54%</td>
+                <td style="color:#e74c3c;">-5.08%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=25，超卖; 40周均线偏离-27.6%，严重超卖; Z-score=-2.6，严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-02-01</td><td>85.0</td>
+                <td>0.553</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.54%</td>
+                <td style="color:#27ae60;">+0.36%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=26，超卖; 40周均线偏离-27.1%，严重超卖; Z-score=-2.0，严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-02-02</td><td>90.0</td>
+                <td>0.534</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.12%</td>
+                <td style="color:#27ae60;">+6.18%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=25，超卖; 40周均线偏离-29.4%，严重超卖; Z-score=-2.2，严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-02-05</td><td>90.0</td>
+                <td>0.523</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+12.24%</td>
+                <td style="color:#27ae60;">+10.90%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=19，极度超卖; 40周均线偏离-30.7%，严重超卖; Z-score=-2.1，严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-04-12</td><td>60.0</td>
+                <td>0.604</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.65%</td>
+                <td style="color:#27ae60;">+0.66%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-13.5%，严重超卖; 动能未衰竭(连跌3日RSI仍降)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-04-16</td><td>68.0</td>
+                <td>0.594</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.03%</td>
+                <td style="color:#e74c3c;">-0.84%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.6%，严重超卖; Z-score=-1.8，明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-04-19</td><td>78.0</td>
+                <td>0.589</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.70%</td>
+                <td style="color:#e74c3c;">-2.38%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.8%，严重超卖; Z-score=-1.9，明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-04-22</td><td>70.0</td>
+                <td>0.587</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.02%</td>
+                <td style="color:#e74c3c;">-2.04%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-15.0%，严重超卖; 底背离：价格新低但RSI未创新低(当前41>前低34)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-04-23</td><td>83.0</td>
+                <td>0.580</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.21%</td>
+                <td style="color:#27ae60;">+1.03%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=31，偏低; 40周均线偏离-15.8%，严重超卖; Z-score=-1.9，明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-04-24</td><td>90.0</td>
+                <td>0.575</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.30%</td>
+                <td style="color:#27ae60;">+6.61%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=27，超卖; 40周均线偏离-16.3%，严重超卖; Z-score=-1.9，明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-04-25</td><td>83.0</td>
+                <td>0.575</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.30%</td>
+                <td style="color:#27ae60;">+4.52%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=28，超卖; 40周均线偏离-16.2%，严重超卖; 微背离：RSI回升(28>27)但价格新低</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2024-06-07</td><td>67.0</td>
+                <td>0.581</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.00%</td>
+                <td style="color:#e74c3c;">-1.03%</td>
+                <td>0d</td>
+                <td class="reasons-cell">偏离-10.6%，严重超卖; Z-score=-2.5，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2024-06-11</td><td>77.0</td>
+                <td>0.580</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.17%</td>
+                <td style="color:#e74c3c;">-1.03%</td>
+                <td>0d</td>
+                <td class="reasons-cell">偏离-10.6%，严重超卖; Z-score=-2.2，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-06-12</td><td>94.0</td>
+                <td>0.576</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.87%</td>
+                <td style="color:#27ae60;">+0.17%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=23，极度超卖; 偏离-11.0%，严重超卖; Z-score=-2.2，严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-06-13</td><td>90.0</td>
+                <td>0.575</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.04%</td>
+                <td style="color:#27ae60;">+0.17%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=28，超卖; 偏离-11.0%，严重超卖; Z-score=-1.9，明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-06-14</td><td>75.0</td>
+                <td>0.574</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.22%</td>
+                <td style="color:#e74c3c;">-1.22%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=30，偏低; 偏离-11.0%，严重超卖; 底背离：价格新低但RSI未创新低(当前30>前低23)</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2024-06-19</td><td>77.0</td>
+                <td>0.567</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.18%</td>
+                <td style="color:#e74c3c;">-4.41%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=18，极度超卖; 偏离-11.6%，严重超卖; 动能未衰竭(连跌2日RSI仍降)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-06-20</td><td>90.0</td>
+                <td>0.555</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.90%</td>
+                <td style="color:#e74c3c;">-3.78%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=15，极度超卖; 40周均线偏离-13.3%，严重超卖; Z-score=-2.2，严重低于均值</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2024-06-21</td><td>96.0</td>
+                <td>0.553</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.54%</td>
+                <td style="color:#e74c3c;">-1.81%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=16，极度超卖; 40周均线偏离-13.5%，严重超卖; Z-score=-2.0，明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-06-24</td><td>97.0</td>
+                <td>0.542</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.55%</td>
+                <td style="color:#e74c3c;">-2.03%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=14，极度超卖; 40周均线偏离-15.0%，严重超卖; Z-score=-2.2，严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-06-25</td><td>97.0</td>
+                <td>0.534</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.69%</td>
+                <td style="color:#e74c3c;">-1.50%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=4，极度超卖; 40周均线偏离-16.1%，严重超卖; Z-score=-2.1，严重低于均值</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2024-06-26</td><td>80.0</td>
+                <td>0.543</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.37%</td>
+                <td style="color:#e74c3c;">-2.39%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=15，极度超卖; 40周均线偏离-14.6%，严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-06-27</td><td>90.0</td>
+                <td>0.531</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.94%</td>
+                <td style="color:#e74c3c;">-1.69%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=14，极度超卖; 40周均线偏离-16.3%，严重超卖; 底背离：价格新低但RSI未创新低(当前14>前低4)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-06-28</td><td>90.0</td>
+                <td>0.526</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.14%</td>
+                <td style="color:#e74c3c;">-0.57%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=15，极度超卖; 40周均线偏离-17.0%，严重超卖; 底背离：价格新低但RSI未创新低(当前15>前低4)</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2024-07-01</td><td>75.0</td>
+                <td>0.530</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.00%</td>
+                <td style="color:#e74c3c;">-3.02%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=20，极度超卖; 40周均线偏离-16.2%，严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-07-02</td><td>90.0</td>
+                <td>0.522</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.96%</td>
+                <td style="color:#e74c3c;">-1.15%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=19，极度超卖; 40周均线偏离-17.3%，严重超卖; 底背离：价格新低但RSI未创新低(当前19>前低4)</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2024-07-03</td><td>75.0</td>
+                <td>0.523</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.38%</td>
+                <td style="color:#e74c3c;">-3.44%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=20，极度超卖; 40周均线偏离-16.9%，严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-07-04</td><td>90.0</td>
+                <td>0.514</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.58%</td>
+                <td style="color:#e74c3c;">-1.17%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=18，极度超卖; 40周均线偏离-18.2%，严重超卖; 底背离：价格新低但RSI未创新低(当前18>前低4)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-07-05</td><td>70.0</td>
+                <td>0.516</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.58%</td>
+                <td style="color:#e74c3c;">-1.55%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=17，极度超卖; 40周均线偏离-17.7%，严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-07-08</td><td>90.0</td>
+                <td>0.505</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.55%</td>
+                <td style="color:#27ae60;">+4.16%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=16，极度超卖; 40周均线偏离-19.3%，严重超卖; 底背离：价格新低但RSI未创新低(当前16>前低4)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-07-09</td><td>70.0</td>
+                <td>0.508</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.72%</td>
+                <td style="color:#27ae60;">+3.74%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=20，极度超卖; 40周均线偏离-18.7%，严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-07-10</td><td>70.0</td>
+                <td>0.508</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.72%</td>
+                <td style="color:#27ae60;">+2.56%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=22，极度超卖; 40周均线偏离-18.5%，严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-12</td><td>70.0</td>
+                <td>0.518</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.35%</td>
+                <td style="color:#27ae60;">+0.19%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-13.9%，严重超卖; 底背离：价格新低但RSI未创新低(当前44>前低40)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-14</td><td>65.0</td>
+                <td>0.515</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.75%</td>
+                <td style="color:#e74c3c;">-0.58%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.2%，严重超卖; 创20日新低</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-16</td><td>70.0</td>
+                <td>0.514</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.78%</td>
+                <td style="color:#e74c3c;">-1.56%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.2%，严重超卖; 底背离：价格新低但RSI未创新低(当前41>前低38)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-19</td><td>70.0</td>
+                <td>0.512</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.59%</td>
+                <td style="color:#e74c3c;">-1.95%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.4%，严重超卖; 底背离：价格新低但RSI未创新低(当前41>前低38)</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2024-08-20</td><td>83.0</td>
+                <td>0.508</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.20%</td>
+                <td style="color:#e74c3c;">-1.77%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=27，超卖; 40周均线偏离-14.9%，严重超卖; Z-score=-1.8，明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-21</td><td>83.0</td>
+                <td>0.506</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.38%</td>
+                <td style="color:#27ae60;">+0.00%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=29，超卖; 40周均线偏离-15.1%，严重超卖; 微背离：RSI回升(29>27)但价格新低</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-22</td><td>86.0</td>
+                <td>0.502</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.19%</td>
+                <td style="color:#27ae60;">+0.00%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=31，偏低; 40周均线偏离-15.7%，严重超卖; Z-score=-1.9，明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-23</td><td>86.0</td>
+                <td>0.499</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.81%</td>
+                <td style="color:#27ae60;">+0.60%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=32，偏低; 40周均线偏离-16.1%，严重超卖; Z-score=-1.9，明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-26</td><td>65.0</td>
+                <td>0.506</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.17%</td>
+                <td style="color:#27ae60;">+1.19%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=29，超卖; 40周均线偏离-14.8%，严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-27</td><td>65.0</td>
+                <td>0.502</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.78%</td>
+                <td style="color:#27ae60;">+3.59%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=25，超卖; 40周均线偏离-15.3%，严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-08-28</td><td>65.0</td>
+                <td>0.502</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.78%</td>
+                <td style="color:#27ae60;">+1.00%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=27，超卖; 40周均线偏离-15.2%，严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-09-13</td><td>70.0</td>
+                <td>0.497</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+228.77%</td>
+                <td style="color:#27ae60;">+220.72%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.5%，严重超卖; 底背离：价格新低但RSI未创新低(当前44>前低25)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-12-19</td><td>72.0</td>
+                <td>2.033</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.03%</td>
+                <td style="color:#27ae60;">+0.69%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=23，极度超卖; Z-score=-2.0，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-12-20</td><td>70.0</td>
+                <td>2.024</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.58%</td>
+                <td style="color:#27ae60;">+0.15%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=17，极度超卖; Z-score=-1.9，明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2024-12-23</td><td>62.0</td>
+                <td>2.018</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.88%</td>
+                <td style="color:#e74c3c;">-0.05%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=17，极度超卖; 20日新低且连跌7日</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2024-12-31</td><td>65.0</td>
+                <td>1.978</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.15%</td>
+                <td style="color:#e74c3c;">-4.55%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=21，极度超卖; 底背离：价格新低但RSI未创新低(当前21>前低17)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2025-01-02</td><td>65.0</td>
+                <td>1.920</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.68%</td>
+                <td style="color:#e74c3c;">-1.51%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=12，极度超卖; Z-score=-2.2，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2025-01-03</td><td>73.0</td>
+                <td>1.883</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.22%</td>
+                <td style="color:#e74c3c;">-0.21%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=12，极度超卖; Z-score=-2.3，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2025-01-06</td><td>63.0</td>
+                <td>1.888</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.42%</td>
+                <td style="color:#e74c3c;">-0.58%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=16，极度超卖; Z-score=-1.9，明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2025-01-08</td><td>65.0</td>
+                <td>1.879</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.85%</td>
+                <td style="color:#e74c3c;">-2.08%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=16，极度超卖; 底背离：价格新低但RSI未创新低(当前16>前低12)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2025-01-09</td><td>65.0</td>
+                <td>1.877</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.44%</td>
+                <td style="color:#27ae60;">+1.17%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=17，极度超卖; 底背离：价格新低但RSI未创新低(当前17>前低12)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2025-01-10</td><td>73.0</td>
+                <td>1.833</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.69%</td>
+                <td style="color:#27ae60;">+3.49%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=15，极度超卖; Z-score=-1.9，明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2025-04-03</td><td>65.0</td>
+                <td>1.874</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-2.45%</td>
+                <td style="color:#e74c3c;">-9.98%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=19，极度超卖; Z-score=-2.3，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2025-04-07</td><td>65.0</td>
+                <td>1.687</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.56%</td>
+                <td style="color:#27ae60;">+2.02%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=9，极度超卖; Z-score=-3.6，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2025-04-08</td><td>72.0</td>
+                <td>1.684</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.74%</td>
+                <td style="color:#27ae60;">+2.85%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=8，极度超卖; Z-score=-2.7，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2025-04-09</td><td>68.0</td>
+                <td>1.687</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.15%</td>
+                <td style="color:#27ae60;">+3.44%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=9，极度超卖; Z-score=-2.2，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2026-04-02</td><td>67.0</td>
+                <td>2.928</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.71%</td>
+                <td style="color:#27ae60;">+1.64%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=28，超卖; Z-score=-2.1，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2026-04-03</td><td>67.0</td>
+                <td>2.856</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.34%</td>
+                <td style="color:#27ae60;">+3.40%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=27，超卖; Z-score=-2.4，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2026-06-03</td><td>60.0</td>
+                <td>3.060</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.85%</td>
+                <td style="color:#e74c3c;">-8.14%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=29，超卖; 底背离：价格新低但RSI未创新低(当前29>前低23)</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2026-06-04</td><td>68.0</td>
+                <td>3.009</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.10%</td>
+                <td style="color:#e74c3c;">-3.56%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=27，超卖; Z-score=-2.0，明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2026-06-05</td><td>72.0</td>
+                <td>2.938</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.95%</td>
+                <td style="color:#e74c3c;">-3.03%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=23，极度超卖; Z-score=-2.3，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2026-06-08</td><td>75.0</td>
+                <td>2.811</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.52%</td>
+                <td style="color:#27ae60;">+1.71%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=18，极度超卖; Z-score=-2.7，严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2026-06-10</td><td>64.0</td>
+                <td>2.849</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.18%</td>
+                <td style="color:#27ae60;">+4.18%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=27，超卖; Z-score=-1.9，明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2026-07-07</td><td>73.0</td>
+                <td>2.760</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.18%</td>
+                <td style="color:#e74c3c;">-6.81%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=32，偏低; Z-score=-2.0，明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2026-07-08</td><td>92.0</td>
+                <td>2.635</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.57%</td>
+                <td style="color:#e74c3c;">-6.68%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=28，超卖; 偏离-11.0%，严重超卖; Z-score=-2.6，严重低于均值</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2026-07-09</td><td>82.0</td>
+                <td>2.648</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.08%</td>
+                <td style="color:#e74c3c;">-5.51%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=30，超卖; 偏离-10.6%，严重超卖; Z-score=-2.1，严重低于均值</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2026-07-10</td><td>95.0</td>
+                <td>2.572</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.31%</td>
+                <td style="color:#e74c3c;">-3.15%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=17，极度超卖; 40周均线偏离-13.2%，严重超卖; Z-score=-2.2，严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2026-07-13</td><td>98.0</td>
+                <td>2.459</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.46%</td>
+                <td style="color:#e74c3c;">-1.34%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=18，极度超卖; 40周均线偏离-17.0%，严重超卖; Z-score=-2.4，严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2026-07-14</td><td>88.0</td>
+                <td>2.502</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.68%</td>
+                <td style="color:#e74c3c;">-6.08%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=20，极度超卖; 40周均线偏离-15.5%，严重超卖; Z-score=-1.8，明显低于均值</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2026-07-15</td><td>80.0</td>
+                <td>2.491</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.52%</td>
+                <td style="color:#e74c3c;">-7.23%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=19，极度超卖; 40周均线偏离-15.9%，严重超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>dividend_value (原版)</td><td>2026-07-16</td><td>90.0</td>
+                <td>2.426</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.12%</td>
+                <td style="color:#e74c3c;">-0.95%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=20，极度超卖; 40周均线偏离-18.1%，严重超卖; 底背离：价格新低但RSI未创新低(当前20>前低17)</td>
+            </tr>
+            <tr class="win">
+                <td>dividend_value (原版)</td><td>2026-07-17</td><td>80.0</td>
+                <td>2.350</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.28%</td>
+                <td style="color:#27ae60;">+1.62%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=16，极度超卖; 40周均线偏离-20.6%，严重超卖; 动能未衰竭(连跌3日RSI仍降)</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-01-22</td><td>61.0</td>
+                <td>0.605</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.64%</td>
+                <td style="color:#27ae60;">+1.98%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-21.8%, 严重超卖; 量比1.3, 温和放量; KDJ J=20, 超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-01-29</td><td>77.0</td>
+                <td>0.576</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.87%</td>
+                <td style="color:#e74c3c;">-3.99%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-24.7%, 严重超卖; Z-score=-2.9, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-01-30</td><td>83.0</td>
+                <td>0.562</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.60%</td>
+                <td style="color:#e74c3c;">-4.98%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=34, 偏低; 40周均线偏离-26.3%, 严重超卖; Z-score=-2.8, 严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-01-31</td><td>90.0</td>
+                <td>0.551</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.54%</td>
+                <td style="color:#e74c3c;">-5.08%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=25, 超卖; 40周均线偏离-27.6%, 严重超卖; Z-score=-2.6, 严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-02-01</td><td>95.0</td>
+                <td>0.553</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.54%</td>
+                <td style="color:#27ae60;">+0.36%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=26, 超卖; 40周均线偏离-27.1%, 严重超卖; Z-score=-2.0, 严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-02-02</td><td>88.0</td>
+                <td>0.534</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.12%</td>
+                <td style="color:#27ae60;">+6.18%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=25, 超卖; 40周均线偏离-29.4%, 严重超卖; Z-score=-2.2, 严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-02-06</td><td>61.0</td>
+                <td>0.555</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.77%</td>
+                <td style="color:#27ae60;">+3.96%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=35, 偏低; 40周均线偏离-26.3%, 严重超卖; RSI回升(19>35), 动量转正</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-04-12</td><td>62.0</td>
+                <td>0.604</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.65%</td>
+                <td style="color:#27ae60;">+0.66%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-13.5%, 严重超卖; KDJ J=15, 超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-04-16</td><td>63.0</td>
+                <td>0.594</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.03%</td>
+                <td style="color:#e74c3c;">-0.84%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.6%, 严重超卖; Z-score=-1.8, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-04-19</td><td>71.0</td>
+                <td>0.589</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.70%</td>
+                <td style="color:#e74c3c;">-2.38%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.8%, 严重超卖; Z-score=-1.9, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-04-22</td><td>67.0</td>
+                <td>0.587</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.02%</td>
+                <td style="color:#e74c3c;">-2.04%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-15.0%, 严重超卖; KDJ J=-7, 极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-04-23</td><td>81.0</td>
+                <td>0.580</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.21%</td>
+                <td style="color:#27ae60;">+1.03%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=31, 偏低; 40周均线偏离-15.8%, 严重超卖; Z-score=-1.9, 明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-04-24</td><td>88.0</td>
+                <td>0.575</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.30%</td>
+                <td style="color:#27ae60;">+6.61%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=27, 超卖; 40周均线偏离-16.3%, 严重超卖; Z-score=-1.9, 明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-04-25</td><td>85.0</td>
+                <td>0.575</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.30%</td>
+                <td style="color:#27ae60;">+4.52%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=28, 超卖; 40周均线偏离-16.2%, 严重超卖; KDJ J=7, 严重超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-06-07</td><td>71.0</td>
+                <td>0.581</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.00%</td>
+                <td style="color:#e74c3c;">-1.03%</td>
+                <td>0d</td>
+                <td class="reasons-cell">偏离-10.6%, 严重超卖; Z-score=-2.5, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-06-11</td><td>72.0</td>
+                <td>0.580</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.17%</td>
+                <td style="color:#e74c3c;">-1.03%</td>
+                <td>0d</td>
+                <td class="reasons-cell">偏离-10.6%, 严重超卖; Z-score=-2.2, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-06-12</td><td>90.0</td>
+                <td>0.576</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.87%</td>
+                <td style="color:#27ae60;">+0.17%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=23, 极度超卖; 偏离-11.0%, 严重超卖; Z-score=-2.2, 严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-06-13</td><td>88.0</td>
+                <td>0.575</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.04%</td>
+                <td style="color:#27ae60;">+0.17%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=28, 超卖; 偏离-11.0%, 严重超卖; Z-score=-1.9, 明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-06-14</td><td>75.0</td>
+                <td>0.574</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.22%</td>
+                <td style="color:#e74c3c;">-1.22%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=30, 偏低; 偏离-11.0%, 严重超卖; KDJ J=6, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-06-17</td><td>63.0</td>
+                <td>0.577</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.69%</td>
+                <td style="color:#e74c3c;">-3.81%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=34, 偏低; 偏离-10.4%, 严重超卖; KDJ J=15, 超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-06-19</td><td>82.0</td>
+                <td>0.567</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.18%</td>
+                <td style="color:#e74c3c;">-4.41%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=18, 极度超卖; 偏离-11.6%, 严重超卖; KDJ J=3, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-06-20</td><td>99.0</td>
+                <td>0.555</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.90%</td>
+                <td style="color:#e74c3c;">-3.78%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=15, 极度超卖; 40周均线偏离-13.3%, 严重超卖; Z-score=-2.2, 严重低于均值</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-06-21</td><td>96.0</td>
+                <td>0.553</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.54%</td>
+                <td style="color:#e74c3c;">-1.81%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=16, 极度超卖; 40周均线偏离-13.5%, 严重超卖; Z-score=-2.0, 明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-06-24</td><td>93.0</td>
+                <td>0.542</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.55%</td>
+                <td style="color:#e74c3c;">-2.03%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=14, 极度超卖; 40周均线偏离-15.0%, 严重超卖; Z-score=-2.2, 严重低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-06-25</td><td>93.0</td>
+                <td>0.534</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.69%</td>
+                <td style="color:#e74c3c;">-1.50%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=4, 极度超卖; 40周均线偏离-16.1%, 严重超卖; Z-score=-2.1, 严重低于均值</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-06-26</td><td>84.0</td>
+                <td>0.543</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.37%</td>
+                <td style="color:#e74c3c;">-2.39%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=15, 极度超卖; 40周均线偏离-14.6%, 严重超卖; RSI回升(4>15), 动量转正</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-06-27</td><td>82.0</td>
+                <td>0.531</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.94%</td>
+                <td style="color:#e74c3c;">-1.69%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=14, 极度超卖; 40周均线偏离-16.3%, 严重超卖; KDJ J=13, 超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-06-28</td><td>90.0</td>
+                <td>0.526</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.14%</td>
+                <td style="color:#e74c3c;">-0.57%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=15, 极度超卖; 40周均线偏离-17.0%, 严重超卖; KDJ J=5, 严重超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-07-01</td><td>82.0</td>
+                <td>0.530</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.00%</td>
+                <td style="color:#e74c3c;">-3.02%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=20, 极度超卖; 40周均线偏离-16.2%, 严重超卖; KDJ J=13, 超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-07-02</td><td>85.0</td>
+                <td>0.522</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.96%</td>
+                <td style="color:#e74c3c;">-1.15%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=19, 极度超卖; 40周均线偏离-17.3%, 严重超卖; KDJ J=6, 严重超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-07-03</td><td>85.0</td>
+                <td>0.523</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.38%</td>
+                <td style="color:#e74c3c;">-3.44%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=20, 极度超卖; 40周均线偏离-16.9%, 严重超卖; KDJ J=9, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-07-04</td><td>85.0</td>
+                <td>0.514</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.58%</td>
+                <td style="color:#e74c3c;">-1.17%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=18, 极度超卖; 40周均线偏离-18.2%, 严重超卖; KDJ J=4, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-07-05</td><td>73.0</td>
+                <td>0.516</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.58%</td>
+                <td style="color:#e74c3c;">-1.55%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=17, 极度超卖; 40周均线偏离-17.7%, 严重超卖; KDJ J=11, 超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-07-08</td><td>85.0</td>
+                <td>0.505</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.55%</td>
+                <td style="color:#27ae60;">+4.16%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=16, 极度超卖; 40周均线偏离-19.3%, 严重超卖; KDJ J=5, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-07-09</td><td>78.0</td>
+                <td>0.508</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.72%</td>
+                <td style="color:#27ae60;">+3.74%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=20, 极度超卖; 40周均线偏离-18.7%, 严重超卖; KDJ J=19, 超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-07-10</td><td>75.0</td>
+                <td>0.508</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.72%</td>
+                <td style="color:#27ae60;">+2.56%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=22, 极度超卖; 40周均线偏离-18.5%, 严重超卖; RSI回升(20>22), 动量转正</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-09</td><td>60.0</td>
+                <td>0.521</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.15%</td>
+                <td style="color:#e74c3c;">-1.15%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-13.6%, 严重超卖; KDJ J=10, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-12</td><td>70.0</td>
+                <td>0.518</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.35%</td>
+                <td style="color:#27ae60;">+0.19%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-13.9%, 严重超卖; KDJ J=1, 严重超卖; RSI回升(40>44), 动量转正</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-14</td><td>62.0</td>
+                <td>0.515</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.75%</td>
+                <td style="color:#e74c3c;">-0.58%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.2%, 严重超卖; KDJ J=12, 超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-16</td><td>67.0</td>
+                <td>0.514</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.78%</td>
+                <td style="color:#e74c3c;">-1.56%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.2%, 严重超卖; KDJ J=11, 超卖; RSI回升(38>41), 动量转正</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-19</td><td>72.0</td>
+                <td>0.512</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.59%</td>
+                <td style="color:#e74c3c;">-1.95%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.4%, 严重超卖; KDJ J=-1, 极度超卖; RSI回升(41>41), 动量转正</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-08-20</td><td>88.0</td>
+                <td>0.508</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.20%</td>
+                <td style="color:#e74c3c;">-1.77%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=27, 超卖; 40周均线偏离-14.9%, 严重超卖; Z-score=-1.8, 明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-21</td><td>85.0</td>
+                <td>0.506</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.38%</td>
+                <td style="color:#27ae60;">+0.00%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=29, 超卖; 40周均线偏离-15.1%, 严重超卖; KDJ J=6, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-22</td><td>84.0</td>
+                <td>0.502</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.19%</td>
+                <td style="color:#27ae60;">+0.00%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=31, 偏低; 40周均线偏离-15.7%, 严重超卖; Z-score=-1.9, 明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-23</td><td>84.0</td>
+                <td>0.499</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.81%</td>
+                <td style="color:#27ae60;">+0.60%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=32, 偏低; 40周均线偏离-16.1%, 严重超卖; Z-score=-1.9, 明显低于均值</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-26</td><td>65.0</td>
+                <td>0.506</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.17%</td>
+                <td style="color:#27ae60;">+1.19%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=29, 超卖; 40周均线偏离-14.8%, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-27</td><td>65.0</td>
+                <td>0.502</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.78%</td>
+                <td style="color:#27ae60;">+3.59%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=25, 超卖; 40周均线偏离-15.3%, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-08-28</td><td>70.0</td>
+                <td>0.502</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.78%</td>
+                <td style="color:#27ae60;">+1.00%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=27, 超卖; 40周均线偏离-15.2%, 严重超卖; RSI回升(25>27), 动量转正</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-09-13</td><td>63.0</td>
+                <td>0.497</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+228.77%</td>
+                <td style="color:#27ae60;">+220.72%</td>
+                <td>1d</td>
+                <td class="reasons-cell">40周均线偏离-14.5%, 严重超卖; 量比1.2, 温和放量</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-12-18</td><td>61.0</td>
+                <td>2.046</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.10%</td>
+                <td style="color:#e74c3c;">-1.37%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=32, 偏低; Z-score=-2.0, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-12-19</td><td>70.0</td>
+                <td>2.033</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.03%</td>
+                <td style="color:#27ae60;">+0.69%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=23, 极度超卖; Z-score=-2.0, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-12-20</td><td>68.0</td>
+                <td>2.024</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.58%</td>
+                <td style="color:#27ae60;">+0.15%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=17, 极度超卖; Z-score=-1.9, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2024-12-23</td><td>62.0</td>
+                <td>2.018</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.88%</td>
+                <td style="color:#e74c3c;">-0.05%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=17, 极度超卖; KDJ J=-4, 极度超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2024-12-31</td><td>60.0</td>
+                <td>1.978</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.15%</td>
+                <td style="color:#e74c3c;">-4.55%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=21, 极度超卖; KDJ J=10, 严重超卖</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2025-01-02</td><td>75.0</td>
+                <td>1.920</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.68%</td>
+                <td style="color:#e74c3c;">-1.51%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=12, 极度超卖; Z-score=-2.2, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2025-01-03</td><td>73.0</td>
+                <td>1.883</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.22%</td>
+                <td style="color:#e74c3c;">-0.21%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=12, 极度超卖; Z-score=-2.3, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2025-01-06</td><td>71.0</td>
+                <td>1.888</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.42%</td>
+                <td style="color:#e74c3c;">-0.58%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=16, 极度超卖; Z-score=-1.9, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2025-01-07</td><td>65.0</td>
+                <td>1.891</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.26%</td>
+                <td style="color:#e74c3c;">-3.07%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=17, 极度超卖; KDJ J=9, 严重超卖; RSI回升(16>17), 动量转正</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2025-01-09</td><td>62.0</td>
+                <td>1.877</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.44%</td>
+                <td style="color:#27ae60;">+1.17%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=17, 极度超卖; KDJ J=16, 超卖; RSI回升(16>17), 动量转正</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2025-01-10</td><td>66.0</td>
+                <td>1.833</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.69%</td>
+                <td style="color:#27ae60;">+3.49%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=15, 极度超卖; Z-score=-1.9, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2025-01-13</td><td>65.0</td>
+                <td>1.840</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.89%</td>
+                <td style="color:#27ae60;">+3.80%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=18, 极度超卖; KDJ J=9, 严重超卖; RSI回升(15>18), 动量转正</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2025-04-01</td><td>61.0</td>
+                <td>1.906</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.52%</td>
+                <td style="color:#e74c3c;">-11.49%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=33, 偏低; Z-score=-2.2, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2025-04-03</td><td>70.0</td>
+                <td>1.874</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-2.45%</td>
+                <td style="color:#e74c3c;">-9.98%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=19, 极度超卖; Z-score=-2.3, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2025-04-07</td><td>77.0</td>
+                <td>1.687</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.56%</td>
+                <td style="color:#27ae60;">+2.02%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=9, 极度超卖; Z-score=-3.6, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2025-04-08</td><td>74.0</td>
+                <td>1.684</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.74%</td>
+                <td style="color:#27ae60;">+2.85%</td>
+                <td>2d</td>
+                <td class="reasons-cell">RSI=8, 极度超卖; Z-score=-2.7, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2025-04-09</td><td>77.0</td>
+                <td>1.687</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.15%</td>
+                <td style="color:#27ae60;">+3.44%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=9, 极度超卖; Z-score=-2.2, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2026-04-02</td><td>63.0</td>
+                <td>2.928</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.71%</td>
+                <td style="color:#27ae60;">+1.64%</td>
+                <td>3d</td>
+                <td class="reasons-cell">RSI=28, 超卖; Z-score=-2.1, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2026-04-03</td><td>65.0</td>
+                <td>2.856</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.34%</td>
+                <td style="color:#27ae60;">+3.40%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=27, 超卖; Z-score=-2.4, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2026-04-07</td><td>61.0</td>
+                <td>2.865</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.57%</td>
+                <td style="color:#27ae60;">+6.49%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=31, 偏低; Z-score=-2.0, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2026-06-01</td><td>60.0</td>
+                <td>3.085</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.68%</td>
+                <td style="color:#e74c3c;">-2.46%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=29, 超卖; KDJ J=5, 严重超卖; RSI回升(28>29), 动量转正</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2026-06-04</td><td>61.0</td>
+                <td>3.009</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.10%</td>
+                <td style="color:#e74c3c;">-3.56%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=27, 超卖; Z-score=-2.0, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2026-06-05</td><td>70.0</td>
+                <td>2.938</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.95%</td>
+                <td style="color:#e74c3c;">-3.03%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=23, 极度超卖; Z-score=-2.3, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2026-06-08</td><td>73.0</td>
+                <td>2.811</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.52%</td>
+                <td style="color:#27ae60;">+1.71%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=18, 极度超卖; Z-score=-2.7, 严重低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2026-06-10</td><td>73.0</td>
+                <td>2.849</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.18%</td>
+                <td style="color:#27ae60;">+4.18%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=27, 超卖; Z-score=-1.9, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2026-06-11</td><td>60.0</td>
+                <td>2.859</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+6.96%</td>
+                <td style="color:#27ae60;">+6.30%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=22, 极度超卖; KDJ J=19, 超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2026-07-07</td><td>68.0</td>
+                <td>2.760</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.18%</td>
+                <td style="color:#e74c3c;">-6.81%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=32, 偏低; Z-score=-2.0, 明显低于均值; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>C. 混合版</td><td>2026-07-08</td><td>87.0</td>
+                <td>2.635</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.57%</td>
+                <td style="color:#e74c3c;">-6.68%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=28, 超卖; 偏离-11.0%, 严重超卖; Z-score=-2.6, 严重低于均值</td>
+            </tr>
+            <tr class="loss">
+                <td>C. 混合版</td><td>2026-07-09</td><td>90.0</td>
+                <td>2.648</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.08%</td>
+                <td style="color:#e74c3c;">-5.51%</td>
+                <td>0d</td>
+                <td class="reasons-cell">RSI=30, 超卖; 偏离-10.6%, 严重超卖; Z-score=-2.1, 严重低于均值</td>
+            </tr>
+        </table>
+    </div>
+    <div class="footer">
+        <p>新能源ETF算法优化 | dividend_value 3变体对比 | T+3胜率回测</p>
+        <p>本报告仅供参考, 不构成投资建议。</p>
+    </div>
+</body>
+</html>

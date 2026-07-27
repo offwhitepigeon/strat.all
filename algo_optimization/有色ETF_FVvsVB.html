@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>有色金属ETF - financial_value vs volatility_breakout</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif; background:#f5f6fa; color:#2c3e50; padding:20px; line-height:1.6; }
+        .header { background:linear-gradient(135deg,#1a1a2e,#16213e); color:white; padding:25px; border-radius:12px; margin-bottom:20px; }
+        .header h1 { font-size:22px; margin-bottom:8px; }
+        .header .meta { opacity:0.8; font-size:13px; }
+        .section { background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow-x:auto; }
+        .section h2 { font-size:17px; margin-bottom:15px; color:#2c3e50; border-bottom:2px solid #ecf0f1; padding-bottom:10px; }
+        table { width:100%; border-collapse:collapse; font-size:13px; }
+        th { background:#f8f9fa; padding:10px; text-align:left; border-bottom:2px solid #dee2e6; white-space:nowrap; }
+        td { padding:8px 10px; border-bottom:1px solid #ecf0f1; }
+        .metric-label { font-weight:bold; color:#495057; background:#f8f9fa; }
+        tr.win { background:#f0fff4; }
+        tr.loss { background:#fff5f5; }
+        .win-cell { font-weight:bold; text-align:center; }
+        tr.win .win-cell { color:#27ae60; }
+        tr.loss .win-cell { color:#e74c3c; }
+        .reasons-cell { font-size:11px; color:#555; max-width:280px; }
+        .algo-header { background:#e74c3c; color:white; } 
+        .footer { text-align:center; padding:20px; color:#95a5a6; font-size:12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>有色金属ETF - financial_value vs volatility_breakout 深度对比</h1>
+        <div class="meta">
+            ETF: sh512400 有色金属ETF |
+            回测: 2024-01-01 ~ 最新 | 阈值&ge;60 | T+3胜率(max_ret > 0.5%)
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>核心指标对比</h2>
+        <table>
+            <tr class="algo-header">
+                <th>指标</th>
+                <th>financial_value</th>
+                <th>volatility_breakout</th>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">信号数</td>
+                <td style="color:#27ae60;font-weight:bold;">26</td>
+                <td style="color:#2c3e50;font-weight:bold;">24</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">胜率</td>
+                <td style="color:#27ae60;font-weight:bold;">92.3%</td>
+                <td style="color:#2c3e50;font-weight:bold;">91.7%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">平均收盘收益</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.59%</td>
+                <td style="color:#2c3e50;font-weight:bold;">+2.46%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">平均最大收益</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.49%</td>
+                <td style="color:#2c3e50;font-weight:bold;">+3.78%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">收益标准差</td>
+                <td style="color:#27ae60;font-weight:bold;">3.86%</td>
+                <td style="color:#2c3e50;font-weight:bold;">3.42%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">最大收益标准差</td>
+                <td style="color:#2c3e50;font-weight:bold;">3.07%</td>
+                <td style="color:#27ae60;font-weight:bold;">3.22%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">风险调整(收益/标准差)</td>
+                <td style="color:#2c3e50;font-weight:bold;">0.67</td>
+                <td style="color:#27ae60;font-weight:bold;">0.72</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">最大收益风险调整</td>
+                <td style="color:#27ae60;font-weight:bold;">1.46</td>
+                <td style="color:#2c3e50;font-weight:bold;">1.17</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">最佳单笔</td>
+                <td style="color:#2c3e50;font-weight:bold;">+12.38%</td>
+                <td style="color:#2c3e50;font-weight:bold;">+12.38%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">最差收盘</td>
+                <td style="color:#27ae60;font-weight:bold;">-4.88%</td>
+                <td style="color:#2c3e50;font-weight:bold;">-2.67%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">最差最大收益</td>
+                <td style="color:#2c3e50;font-weight:bold;">-0.68%</td>
+                <td style="color:#2c3e50;font-weight:bold;">-0.68%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">盈利信号均最大收益</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.88%</td>
+                <td style="color:#2c3e50;font-weight:bold;">+4.16%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">亏损信号均收盘收益</td>
+                <td style="color:#27ae60;font-weight:bold;">-1.93%</td>
+                <td style="color:#2c3e50;font-weight:bold;">-0.62%</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">平均信号分</td>
+                <td style="color:#27ae60;font-weight:bold;">73.8</td>
+                <td style="color:#2c3e50;font-weight:bold;">66.2</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>最大收益分布</h2>
+        <table>
+            <tr class="algo-header"><th>收益区间(max_return)</th><th>financial_value</th><th>volatility_breakout</th></tr>
+            
+            <tr>
+                <td class="metric-label">>+5%</td>
+                <td>11 (42%)</td>
+                <td>8 (33%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">+3~5%</td>
+                <td>6 (23%)</td>
+                <td>4 (17%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">+1~3%</td>
+                <td>7 (27%)</td>
+                <td>7 (29%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">0~1%</td>
+                <td>1 (4%)</td>
+                <td>4 (17%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">-1~0%</td>
+                <td>1 (4%)</td>
+                <td>1 (4%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label"><-1%</td>
+                <td>0 (0%)</td>
+                <td>0 (0%)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>逐年表现</h2>
+        <table>
+            <tr class="algo-header"><th>年份</th><th>financial_value</th><th>volatility_breakout</th></tr>
+            <tr><td>2024</td><td>14信号/85.7%/+1.74%</td><td>16信号/87.5%/+1.70%</td></tr><tr><td>2025</td><td>5信号/100.0%/+5.50%</td><td>5信号/100.0%/+5.50%</td></tr><tr><td>2026</td><td>7信号/100.0%/+2.23%</td><td>3信号/100.0%/+1.48%</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>信号分数分布</h2>
+        <table>
+            <tr class="algo-header"><th>分数区间</th><th>financial_value</th><th>volatility_breakout</th></tr>
+            
+            <tr>
+                <td class="metric-label">60-70</td>
+                <td>10 (38%)</td>
+                <td>18 (75%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">70-80</td>
+                <td>8 (31%)</td>
+                <td>5 (21%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">80-90</td>
+                <td>5 (19%)</td>
+                <td>1 (4%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">90+</td>
+                <td>3 (12%)</td>
+                <td>0 (0%)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>胜利信号达标天数分布</h2>
+        <table>
+            <tr class="algo-header"><th>达标天数</th><th>financial_value</th><th>volatility_breakout</th></tr>
+            
+            <tr>
+                <td class="metric-label">T+1</td>
+                <td>21 (81%)</td>
+                <td>20 (83%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">T+2</td>
+                <td>2 (8%)</td>
+                <td>1 (4%)</td>
+            </tr>
+            
+            <tr>
+                <td class="metric-label">T+3</td>
+                <td>1 (4%)</td>
+                <td>1 (4%)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>全部信号明细</h2>
+        <table>
+            <tr class="algo-header">
+                <th>算法</th><th>日期</th><th>信号分</th><th>买入价</th>
+                <th>结果</th><th>最大收益</th><th>收盘收益</th><th>达标天数</th><th>理由</th>
+            </tr>
+            
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-01-22</td>
+                <td style="font-weight:bold;">92.0</td>
+                <td>0.850</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.88%</td>
+                <td style="color:#27ae60;">+5.53%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -8.4%; RSI=19，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-01-23</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.861</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.46%</td>
+                <td style="color:#27ae60;">+4.53%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=23，极度超卖; Z-score=-2.1，严重偏低</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-01-31</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>0.841</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.55%</td>
+                <td style="color:#e74c3c;">-4.88%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -8.4%; RSI=25，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-02-02</td>
+                <td style="font-weight:bold;">88.0</td>
+                <td>0.821</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+6.70%</td>
+                <td style="color:#27ae60;">+6.70%</td>
+                <td>2d</td>
+                <td class="reasons-cell">偏离MA60 -10.2%，严重超卖; RSI=25，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-02-05</td>
+                <td style="font-weight:bold;">90.0</td>
+                <td>0.800</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+12.38%</td>
+                <td style="color:#27ae60;">+10.62%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -12.3%，严重超卖; RSI=22，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-06-24</td>
+                <td style="font-weight:bold;">63.0</td>
+                <td>0.980</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.22%</td>
+                <td style="color:#e74c3c;">-1.22%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -8.2%; RSI=30，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-06-25</td>
+                <td style="font-weight:bold;">70.0</td>
+                <td>0.981</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.43%</td>
+                <td style="color:#27ae60;">+0.61%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -8.0%; RSI=24，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-06-27</td>
+                <td style="font-weight:bold;">72.0</td>
+                <td>0.968</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.65%</td>
+                <td style="color:#27ae60;">+3.10%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -9.2%; RSI=25，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-07-25</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.913</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.40%</td>
+                <td style="color:#27ae60;">+1.31%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -12.0%; RSI=30，超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>financial_value</td>
+                <td>2024-09-05</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.882</td>
+                <td class="win-cell">LOSS</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.45%</td>
+                <td style="color:#e74c3c;">-2.72%</td>
+                <td>0d</td>
+                <td class="reasons-cell">偏离MA60 -8.2%; Z-score=-2.3，严重偏低</td>
+            </tr>
+            <tr class="loss">
+                <td>financial_value</td>
+                <td>2024-09-06</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.877</td>
+                <td class="win-cell">LOSS</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.68%</td>
+                <td style="color:#e74c3c;">-1.14%</td>
+                <td>0d</td>
+                <td class="reasons-cell">偏离MA60 -8.5%; RSI=29，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-09-09</td>
+                <td style="font-weight:bold;">78.0</td>
+                <td>0.862</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.74%</td>
+                <td style="color:#27ae60;">+0.46%</td>
+                <td>2d</td>
+                <td class="reasons-cell">偏离MA60 -9.8%; RSI=28，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-09-10</td>
+                <td style="font-weight:bold;">82.0</td>
+                <td>0.858</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.56%</td>
+                <td style="color:#27ae60;">+0.58%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -10.0%; RSI=21，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2024-12-31</td>
+                <td style="font-weight:bold;">63.0</td>
+                <td>0.973</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.36%</td>
+                <td style="color:#27ae60;">+0.82%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=16，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2025-01-02</td>
+                <td style="font-weight:bold;">67.0</td>
+                <td>0.963</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.84%</td>
+                <td style="color:#27ae60;">+3.84%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=11，极度超卖; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2025-02-28</td>
+                <td style="font-weight:bold;">63.0</td>
+                <td>1.000</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.10%</td>
+                <td style="color:#27ae60;">+4.00%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=24，极度超卖; Z-score=-2.0，严重偏低</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2025-04-07</td>
+                <td style="font-weight:bold;">92.0</td>
+                <td>0.948</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.81%</td>
+                <td style="color:#27ae60;">+6.54%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -9.3%; RSI=18，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2025-04-08</td>
+                <td style="font-weight:bold;">72.0</td>
+                <td>0.961</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+6.66%</td>
+                <td style="color:#27ae60;">+5.93%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=17，极度超卖; Z-score=-2.6，严重偏低</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2025-04-09</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>0.973</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+8.22%</td>
+                <td style="color:#27ae60;">+7.19%</td>
+                <td>1d</td>
+                <td class="reasons-cell">RSI=21，极度超卖; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2026-03-19</td>
+                <td style="font-weight:bold;">85.0</td>
+                <td>1.944</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.75%</td>
+                <td style="color:#e74c3c;">-2.67%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -9.8%; RSI=16，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2026-03-20</td>
+                <td style="font-weight:bold;">82.0</td>
+                <td>1.917</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.08%</td>
+                <td style="color:#27ae60;">+1.83%</td>
+                <td>3d</td>
+                <td class="reasons-cell">偏离MA60 -11.1%; RSI=4，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2026-03-23</td>
+                <td style="font-weight:bold;">85.0</td>
+                <td>1.823</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+8.39%</td>
+                <td style="color:#27ae60;">+5.27%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -15.5%; RSI=4，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2026-03-24</td>
+                <td style="font-weight:bold;">70.0</td>
+                <td>1.892</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.13%</td>
+                <td style="color:#27ae60;">+4.44%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -12.4%; RSI=14，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2026-07-08</td>
+                <td style="font-weight:bold;">63.0</td>
+                <td>1.750</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.03%</td>
+                <td style="color:#e74c3c;">-4.06%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -13.5%; RSI=28，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2026-07-13</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.679</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+6.08%</td>
+                <td style="color:#27ae60;">+2.74%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -16.3%; RSI=18，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>financial_value</td>
+                <td>2026-07-17</td>
+                <td style="font-weight:bold;">66.0</td>
+                <td>1.636</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+9.66%</td>
+                <td style="color:#27ae60;">+8.07%</td>
+                <td>1d</td>
+                <td class="reasons-cell">偏离MA60 -17.2%，严重超卖; RSI=28，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-01-22</td>
+                <td style="font-weight:bold;">68.0</td>
+                <td>0.850</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.88%</td>
+                <td style="color:#27ae60;">+5.53%</td>
+                <td>1d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=19，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-01-23</td>
+                <td style="font-weight:bold;">68.0</td>
+                <td>0.861</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.46%</td>
+                <td style="color:#27ae60;">+4.53%</td>
+                <td>1d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=23，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-02-02</td>
+                <td style="font-weight:bold;">68.0</td>
+                <td>0.821</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+6.70%</td>
+                <td style="color:#27ae60;">+6.70%</td>
+                <td>2d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=25，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-02-05</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.800</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+12.38%</td>
+                <td style="color:#27ae60;">+10.62%</td>
+                <td>1d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=22，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-06-24</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.980</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.22%</td>
+                <td style="color:#e74c3c;">-1.22%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率处于低位; RSI=30，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-06-25</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>0.981</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.43%</td>
+                <td style="color:#27ae60;">+0.61%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率处于低位; RSI=24，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-06-27</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.968</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.65%</td>
+                <td style="color:#27ae60;">+3.10%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率处于低位; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-09-02</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>0.900</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.22%</td>
+                <td style="color:#e74c3c;">-2.00%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率+布林带宽度收缩，临近变盘; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>volatility_breakout</td>
+                <td>2024-09-06</td>
+                <td style="font-weight:bold;">70.0</td>
+                <td>0.877</td>
+                <td class="win-cell">LOSS</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.68%</td>
+                <td style="color:#e74c3c;">-1.14%</td>
+                <td>0d</td>
+                <td class="reasons-cell">波动率处于低位; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-09-10</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.858</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.56%</td>
+                <td style="color:#27ae60;">+0.58%</td>
+                <td>1d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=21，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-09-11</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.867</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.50%</td>
+                <td style="color:#e74c3c;">-0.81%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率处于低位; RSI=29，超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>volatility_breakout</td>
+                <td>2024-12-19</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.005</td>
+                <td class="win-cell">LOSS</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.00%</td>
+                <td style="color:#e74c3c;">-0.10%</td>
+                <td>0d</td>
+                <td class="reasons-cell">波动率+布林带宽度收缩，临近变盘; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-12-20</td>
+                <td style="font-weight:bold;">73.0</td>
+                <td>0.999</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.60%</td>
+                <td style="color:#e74c3c;">-0.50%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率+布林带宽度收缩，临近变盘; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-12-23</td>
+                <td style="font-weight:bold;">63.0</td>
+                <td>0.996</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.90%</td>
+                <td style="color:#27ae60;">+0.20%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率+布林带宽度收缩，临近变盘; Z-score=-1.8</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-12-25</td>
+                <td style="font-weight:bold;">63.0</td>
+                <td>0.994</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.80%</td>
+                <td style="color:#27ae60;">+0.20%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率+布林带宽度收缩，临近变盘; Z-score=-1.5</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2024-12-31</td>
+                <td style="font-weight:bold;">73.0</td>
+                <td>0.973</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.36%</td>
+                <td style="color:#27ae60;">+0.82%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率处于低位; RSI=16，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2025-01-02</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.963</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.84%</td>
+                <td style="color:#27ae60;">+3.84%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率处于低位; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2025-02-28</td>
+                <td style="font-weight:bold;">83.0</td>
+                <td>1.000</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.10%</td>
+                <td style="color:#27ae60;">+4.00%</td>
+                <td>1d</td>
+                <td class="reasons-cell">波动率处于低位; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2025-04-07</td>
+                <td style="font-weight:bold;">68.0</td>
+                <td>0.948</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.81%</td>
+                <td style="color:#27ae60;">+6.54%</td>
+                <td>1d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=18，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2025-04-08</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.961</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+6.66%</td>
+                <td style="color:#27ae60;">+5.93%</td>
+                <td>1d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=17，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2025-04-09</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.973</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+8.22%</td>
+                <td style="color:#27ae60;">+7.19%</td>
+                <td>1d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=21，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2026-03-19</td>
+                <td style="font-weight:bold;">68.0</td>
+                <td>1.944</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.75%</td>
+                <td style="color:#e74c3c;">-2.67%</td>
+                <td>1d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=16，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2026-03-20</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.917</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.08%</td>
+                <td style="color:#27ae60;">+1.83%</td>
+                <td>3d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=4，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>volatility_breakout</td>
+                <td>2026-03-23</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.823</td>
+                <td class="win-cell">WIN</td>
+                <td style="color:#27ae60;font-weight:bold;">+8.39%</td>
+                <td style="color:#27ae60;">+5.27%</td>
+                <td>1d</td>
+                <td class="reasons-cell">触及布林带下轨; RSI=4，极度超卖</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>有色金属ETF算法优化 - financial_value vs volatility_breakout 深度对比</p>
+    </div>
+</body>
+</html>

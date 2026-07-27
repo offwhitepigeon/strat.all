@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>标普生物科技ETF算法对比</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif; background:#f5f6fa; color:#2c3e50; padding:20px; line-height:1.6; }
+        .header { background:linear-gradient(135deg,#1a1a2e,#16213e); color:white; padding:25px; border-radius:12px; margin-bottom:20px; }
+        .header h1 { font-size:22px; margin-bottom:8px; }
+        .header .meta { opacity:0.8; font-size:13px; }
+        .conclusion { background:#e67e22; color:white; padding:15px 20px; border-radius:10px; margin-bottom:20px; font-size:15px; }
+        .section { background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.08); overflow-x:auto; }
+        .section h2 { font-size:17px; margin-bottom:15px; color:#2c3e50; border-bottom:2px solid #ecf0f1; padding-bottom:10px; }
+        table { width:100%; border-collapse:collapse; font-size:13px; }
+        th { background:#f8f9fa; padding:10px; text-align:left; border-bottom:2px solid #dee2e6; color:#495057; white-space:nowrap; }
+        td { padding:8px 10px; border-bottom:1px solid #ecf0f1; }
+        tr.win { background:#f0fff4; }
+        tr.loss { background:#fff5f5; }
+        .win-cell { font-weight:bold; text-align:center; }
+        tr.win .win-cell { color:#27ae60; }
+        tr.loss .win-cell { color:#e74c3c; }
+        tr.best-row { background:#fff3cd; }
+        tr.current-row { background:#e8f4fd; }
+        .reasons-cell { font-size:11px; color:#555; max-width:300px; }
+        .footer { text-align:center; padding:20px; color:#95a5a6; font-size:12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>标普生物科技ETF 全算法对比回测</h1>
+        <div class="meta">
+            ETF: sz159502 标普生物科技ETF |
+            回测区间: 2024-01-01 ~ 最新 |
+            信号阈值: &ge;60分 |
+            胜率定义: T+3最高价收益 &gt; 0.5% |
+            算法数: 13种
+        </div>
+    </div>
+
+    <div class="conclusion">最佳算法为 trend_pullback (胜率75.6%, 45信号), 当前 support_rebound (胜率61.3%, 31信号), 建议考虑更换或优化</div>
+
+    <div class="section">
+        <h2>算法对比 (按胜率降序, [当前]=support_rebound, [最佳]=推荐)</h2>
+        <table>
+            <tr>
+                <th>算法</th><th>信号数</th><th>胜利</th><th>胜率</th>
+                <th>平均收盘收益</th><th>平均最大收益</th><th>平均信号分</th>
+                <th>最佳最大收益</th><th>最差收盘收益</th>
+            </tr>
+            
+            <tr  >
+                <td><strong>cycle_momentum</strong></td>
+                <td>2</td>
+                <td>2</td>
+                <td style="color:#27ae60;font-weight:bold;">100.0%</td>
+                <td style="color:#27ae60;">+3.56%</td>
+                <td style="color:#27ae60;">+5.68%</td>
+                <td>63.5</td>
+                <td style="color:#27ae60;">+9.04%</td>
+                <td style="color:#e74c3c;">-0.42%</td>
+            </tr>
+            <tr class="best-row" >
+                <td><strong>trend_pullback</strong> [最佳]</td>
+                <td>45</td>
+                <td>34</td>
+                <td style="color:#27ae60;font-weight:bold;">75.6%</td>
+                <td style="color:#27ae60;">+0.80%</td>
+                <td style="color:#27ae60;">+2.39%</td>
+                <td>62.8</td>
+                <td style="color:#27ae60;">+9.04%</td>
+                <td style="color:#e74c3c;">-5.94%</td>
+            </tr>
+            <tr  >
+                <td><strong>premium_rate</strong></td>
+                <td>7</td>
+                <td>5</td>
+                <td style="color:#e67e22;font-weight:bold;">71.4%</td>
+                <td style="color:#e74c3c;">-1.58%</td>
+                <td style="color:#27ae60;">+1.89%</td>
+                <td>64.6</td>
+                <td style="color:#27ae60;">+7.46%</td>
+                <td style="color:#e74c3c;">-10.78%</td>
+            </tr>
+            <tr  >
+                <td><strong>oil_pair_reversal</strong></td>
+                <td>19</td>
+                <td>13</td>
+                <td style="color:#e67e22;font-weight:bold;">68.4%</td>
+                <td style="color:#e74c3c;">-1.34%</td>
+                <td style="color:#27ae60;">+1.37%</td>
+                <td>67.6</td>
+                <td style="color:#27ae60;">+4.68%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+            </tr>
+            <tr  >
+                <td><strong>gold_pair_reversal</strong></td>
+                <td>28</td>
+                <td>19</td>
+                <td style="color:#e67e22;font-weight:bold;">67.9%</td>
+                <td style="color:#e74c3c;">-0.47%</td>
+                <td style="color:#27ae60;">+1.77%</td>
+                <td>68.4</td>
+                <td style="color:#27ae60;">+9.04%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+            </tr>
+            <tr  >
+                <td><strong>seasonal_value</strong></td>
+                <td>26</td>
+                <td>17</td>
+                <td style="color:#e67e22;font-weight:bold;">65.4%</td>
+                <td style="color:#e74c3c;">-0.57%</td>
+                <td style="color:#27ae60;">+1.96%</td>
+                <td>73.6</td>
+                <td style="color:#27ae60;">+9.04%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+            </tr>
+            <tr  >
+                <td><strong>momentum_pullback</strong></td>
+                <td>13</td>
+                <td>8</td>
+                <td style="color:#e67e22;font-weight:bold;">61.5%</td>
+                <td style="color:#27ae60;">+1.06%</td>
+                <td style="color:#27ae60;">+1.96%</td>
+                <td>67.0</td>
+                <td style="color:#27ae60;">+9.04%</td>
+                <td style="color:#e74c3c;">-3.95%</td>
+            </tr>
+            <tr  class="current-row">
+                <td><strong>support_rebound</strong> [当前]</td>
+                <td>31</td>
+                <td>19</td>
+                <td style="color:#e67e22;font-weight:bold;">61.3%</td>
+                <td style="color:#e74c3c;">-0.84%</td>
+                <td style="color:#27ae60;">+1.34%</td>
+                <td>72.0</td>
+                <td style="color:#27ae60;">+8.44%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+            </tr>
+            <tr  >
+                <td><strong>financial_value</strong></td>
+                <td>17</td>
+                <td>10</td>
+                <td style="color:#e74c3c;font-weight:bold;">58.8%</td>
+                <td style="color:#e74c3c;">-1.30%</td>
+                <td style="color:#27ae60;">+1.69%</td>
+                <td>81.4</td>
+                <td style="color:#27ae60;">+8.44%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+            </tr>
+            <tr  >
+                <td><strong>extreme_reversal</strong></td>
+                <td>12</td>
+                <td>7</td>
+                <td style="color:#e74c3c;font-weight:bold;">58.3%</td>
+                <td style="color:#e74c3c;">-1.60%</td>
+                <td style="color:#27ae60;">+1.72%</td>
+                <td>71.8</td>
+                <td style="color:#27ae60;">+8.44%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+            </tr>
+            <tr  >
+                <td><strong>dividend_value</strong></td>
+                <td>28</td>
+                <td>15</td>
+                <td style="color:#e74c3c;font-weight:bold;">53.6%</td>
+                <td style="color:#e74c3c;">-1.37%</td>
+                <td style="color:#27ae60;">+1.18%</td>
+                <td>77.3</td>
+                <td style="color:#27ae60;">+8.44%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+            </tr>
+            <tr  >
+                <td><strong>volatility_breakout</strong></td>
+                <td>23</td>
+                <td>12</td>
+                <td style="color:#e74c3c;font-weight:bold;">52.2%</td>
+                <td style="color:#e74c3c;">-1.90%</td>
+                <td style="color:#27ae60;">+1.08%</td>
+                <td>69.5</td>
+                <td style="color:#27ae60;">+8.44%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+            </tr>
+            <tr  >
+                <td><strong>broad_reversal</strong></td>
+                <td>16</td>
+                <td>7</td>
+                <td style="color:#e74c3c;font-weight:bold;">43.8%</td>
+                <td style="color:#e74c3c;">-2.19%</td>
+                <td style="color:#27ae60;">+1.13%</td>
+                <td>75.1</td>
+                <td style="color:#27ae60;">+8.44%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>当前算法 vs 最佳算法 - 信号明细</h2>
+        <table>
+            <tr>
+                <th>算法</th><th>日期</th><th>信号分</th><th>买入价</th>
+                <th>胜</th><th>最大收益</th><th>收盘收益</th><th>达标天数</th><th>理由</th>
+            </tr>
+            
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2024-04-15</td>
+                <td style="font-weight:bold;">87.0</td>
+                <td>0.950</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-2.32%</td>
+                <td style="color:#e74c3c;">-4.84%</td>
+                <td>0日</td>
+                <td class="reasons-cell">接近60日支撑位（偏离+2.0%）; RSI=29，超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2024-04-16</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.916</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.33%</td>
+                <td style="color:#e74c3c;">-4.37%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.1%）; RSI=27，超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2024-04-17</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.917</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.98%</td>
+                <td style="color:#e74c3c;">-3.16%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.5%）; RSI=26，超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2024-04-18</td>
+                <td style="font-weight:bold;">80.0</td>
+                <td>0.904</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.55%</td>
+                <td style="color:#e74c3c;">-0.88%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.4%）; RSI=24，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2024-04-19</td>
+                <td style="font-weight:bold;">80.0</td>
+                <td>0.876</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.88%</td>
+                <td style="color:#27ae60;">+3.77%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.5%）; RSI=14，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2024-04-22</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.888</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.48%</td>
+                <td style="color:#27ae60;">+1.58%</td>
+                <td>1日</td>
+                <td class="reasons-cell">接近60日支撑位（偏离+2.9%）; RSI=19，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2024-04-23</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>0.896</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.56%</td>
+                <td style="color:#e74c3c;">-1.34%</td>
+                <td>1日</td>
+                <td class="reasons-cell">接近60日支撑位（偏离+3.8%）; RSI=21，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2024-12-19</td>
+                <td style="font-weight:bold;">70.0</td>
+                <td>1.001</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.90%</td>
+                <td style="color:#27ae60;">+0.20%</td>
+                <td>2日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.2%）; RSI=27，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2024-12-20</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.982</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.87%</td>
+                <td style="color:#27ae60;">+2.44%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.3%）; RSI=26，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2024-12-31</td>
+                <td style="font-weight:bold;">67.0</td>
+                <td>0.993</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.13%</td>
+                <td style="color:#27ae60;">+3.73%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.4%）; MACD柱线收窄，底背离信号</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2025-02-25</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>0.980</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.71%</td>
+                <td style="color:#e74c3c;">-3.06%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.9%）; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2025-02-26</td>
+                <td style="font-weight:bold;">80.0</td>
+                <td>0.970</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.21%</td>
+                <td style="color:#27ae60;">+0.21%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.5%）; RSI=19，极度超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2025-02-27</td>
+                <td style="font-weight:bold;">80.0</td>
+                <td>0.972</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.00%</td>
+                <td style="color:#e74c3c;">-2.88%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.0%）; RSI=24，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-02-28</td>
+                <td style="font-weight:bold;">80.0</td>
+                <td>0.950</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.32%</td>
+                <td style="color:#e74c3c;">-0.42%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.1%）; RSI=22，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-03-04</td>
+                <td style="font-weight:bold;">67.0</td>
+                <td>0.944</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.27%</td>
+                <td style="color:#e74c3c;">-0.11%</td>
+                <td>2日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.7%）; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-03-05</td>
+                <td style="font-weight:bold;">67.0</td>
+                <td>0.946</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.06%</td>
+                <td style="color:#27ae60;">+0.00%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.0%）; 触及布林带下轨</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2025-03-06</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>0.953</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.63%</td>
+                <td style="color:#e74c3c;">-1.68%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.7%）</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2025-03-07</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>0.943</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.42%</td>
+                <td style="color:#e74c3c;">-0.53%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.6%）</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2025-03-10</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.946</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.32%</td>
+                <td style="color:#e74c3c;">-0.11%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.0%）; RSI=29，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-03-11</td>
+                <td style="font-weight:bold;">83.0</td>
+                <td>0.937</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.28%</td>
+                <td style="color:#27ae60;">+0.75%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.8%）; RSI=28，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-03-12</td>
+                <td style="font-weight:bold;">75.0</td>
+                <td>0.938</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.17%</td>
+                <td style="color:#27ae60;">+0.32%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.9%）; RSI=26，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-03-13</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>0.945</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.63%</td>
+                <td style="color:#27ae60;">+0.63%</td>
+                <td>3日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.6%）; MACD柱线收窄，底背离信号</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-03-14</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>0.944</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.74%</td>
+                <td style="color:#e74c3c;">-0.85%</td>
+                <td>2日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.5%）; MACD柱线收窄，底背离信号</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-03-17</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>0.941</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.06%</td>
+                <td style="color:#27ae60;">+0.96%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+1.2%）; MACD柱线收窄，底背离信号</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2025-04-01</td>
+                <td style="font-weight:bold;">67.0</td>
+                <td>0.886</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-1.58%</td>
+                <td style="color:#e74c3c;">-12.30%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.9%）; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-04-02</td>
+                <td style="font-weight:bold;">80.0</td>
+                <td>0.865</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.81%</td>
+                <td style="color:#e74c3c;">-6.71%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.3%）; RSI=24，极度超卖</td>
+            </tr>
+            <tr class="loss">
+                <td>support_rebound</td>
+                <td>2025-04-03</td>
+                <td style="font-weight:bold;">80.0</td>
+                <td>0.863</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-5.45%</td>
+                <td style="color:#e74c3c;">-10.78%</td>
+                <td>0日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.5%）; RSI=24，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-04-07</td>
+                <td style="font-weight:bold;">80.0</td>
+                <td>0.777</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+7.46%</td>
+                <td style="color:#27ae60;">+5.02%</td>
+                <td>1日</td>
+                <td class="reasons-cell">触及60日支撑位（偏离+0.0%）; RSI=16，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-04-08</td>
+                <td style="font-weight:bold;">72.0</td>
+                <td>0.807</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.47%</td>
+                <td style="color:#e74c3c;">-1.61%</td>
+                <td>2日</td>
+                <td class="reasons-cell">接近60日支撑位（偏离+3.9%）; RSI=22，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-04-09</td>
+                <td style="font-weight:bold;">72.0</td>
+                <td>0.770</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+8.44%</td>
+                <td style="color:#27ae60;">+6.10%</td>
+                <td>1日</td>
+                <td class="reasons-cell">接近60日支撑位（偏离+2.4%）; RSI=21，极度超卖</td>
+            </tr>
+            <tr class="win">
+                <td>support_rebound</td>
+                <td>2025-04-11</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>0.794</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.04%</td>
+                <td style="color:#27ae60;">+3.90%</td>
+                <td>1日</td>
+                <td class="reasons-cell">RSI=28，超卖; MACD柱线收窄，底背离信号</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2024-04-30</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>0.931</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.37%</td>
+                <td style="color:#27ae60;">+4.94%</td>
+                <td>1日</td>
+                <td class="reasons-cell">精确回踩MA20（偏离-0.7%）; MACD柱线翻红，反弹信号</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2024-08-15</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.032</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.43%</td>
+                <td style="color:#27ae60;">+5.23%</td>
+                <td>1日</td>
+                <td class="reasons-cell">精确回踩MA20（偏离-2.5%）; MACD柱线收窄，底背离</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2024-09-10</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.040</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.83%</td>
+                <td style="color:#27ae60;">+1.54%</td>
+                <td>2日</td>
+                <td class="reasons-cell">精确回踩MA20（偏离-2.3%）; MACD柱线收窄，底背离</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2024-09-11</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.040</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.46%</td>
+                <td style="color:#27ae60;">+3.37%</td>
+                <td>1日</td>
+                <td class="reasons-cell">精确回踩MA20（偏离-2.3%）; RSI=26，超卖</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2024-09-13</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.056</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.94%</td>
+                <td style="color:#27ae60;">+2.37%</td>
+                <td>1日</td>
+                <td class="reasons-cell">精确回踩MA20（偏离-0.9%）; MACD柱线收窄，底背离</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2024-10-11</td>
+                <td style="font-weight:bold;">68.0</td>
+                <td>1.017</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.13%</td>
+                <td style="color:#27ae60;">+4.13%</td>
+                <td>1日</td>
+                <td class="reasons-cell">精确回踩MA20（偏离-2.6%）; MACD柱线收窄，底背离</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2024-11-25</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.056</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.94%</td>
+                <td style="color:#27ae60;">+2.37%</td>
+                <td>1日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-0.2%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2024-11-26</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.061</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.73%</td>
+                <td style="color:#27ae60;">+2.73%</td>
+                <td>1日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离+0.3%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2024-12-17</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.044</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.38%</td>
+                <td style="color:#e74c3c;">-5.94%</td>
+                <td>0日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-1.2%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2024-12-18</td>
+                <td style="font-weight:bold;">70.0</td>
+                <td>1.037</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-2.03%</td>
+                <td style="color:#e74c3c;">-2.12%</td>
+                <td>0日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-1.9%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2024-12-27</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.018</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-1.28%</td>
+                <td style="color:#e74c3c;">-1.67%</td>
+                <td>0日</td>
+                <td class="reasons-cell">精确回踩MA20（偏离-2.0%）; MACD柱线收窄，底背离</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2024-12-30</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.004</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.09%</td>
+                <td style="color:#27ae60;">+1.89%</td>
+                <td>3日</td>
+                <td class="reasons-cell">精确回踩MA20（偏离-3.0%）; MACD柱线收窄，底背离</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2025-02-25</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>0.980</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.71%</td>
+                <td style="color:#e74c3c;">-3.06%</td>
+                <td>0日</td>
+                <td class="reasons-cell">精确回踩MA20（偏离-2.2%）; 触及布林带下轨</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2025-12-17</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.293</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.71%</td>
+                <td style="color:#27ae60;">+3.71%</td>
+                <td>3日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-0.9%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2025-12-18</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.261</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+9.04%</td>
+                <td style="color:#27ae60;">+7.53%</td>
+                <td>1日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 回踩MA20附近（偏离-3.5%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-01-14</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>1.301</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.23%</td>
+                <td style="color:#e74c3c;">-0.69%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-1.3%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2026-01-15</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.325</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-1.06%</td>
+                <td style="color:#e74c3c;">-3.40%</td>
+                <td>0日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离+0.5%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2026-01-16</td>
+                <td style="font-weight:bold;">70.0</td>
+                <td>1.308</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.54%</td>
+                <td style="color:#e74c3c;">-1.22%</td>
+                <td>0日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-0.9%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-01-19</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.292</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.48%</td>
+                <td style="color:#27ae60;">+2.32%</td>
+                <td>2日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-2.2%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-01-20</td>
+                <td style="font-weight:bold;">70.0</td>
+                <td>1.280</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+6.64%</td>
+                <td style="color:#27ae60;">+5.78%</td>
+                <td>1日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 回踩MA20附近（偏离-3.1%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-01-21</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>1.292</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+5.65%</td>
+                <td style="color:#27ae60;">+1.63%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-2.0%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-02-03</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.301</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.61%</td>
+                <td style="color:#e74c3c;">-4.38%</td>
+                <td>1日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-0.3%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2026-02-04</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.309</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-1.38%</td>
+                <td style="color:#e74c3c;">-2.22%</td>
+                <td>0日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离+0.3%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-02-12</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>1.278</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.13%</td>
+                <td style="color:#27ae60;">+2.19%</td>
+                <td>2日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-1.3%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-02-13</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.257</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.85%</td>
+                <td style="color:#27ae60;">+3.34%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-2.7%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-02-24</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.293</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.93%</td>
+                <td style="color:#e74c3c;">-0.23%</td>
+                <td>1日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离+0.1%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2026-02-25</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.306</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.46%</td>
+                <td style="color:#e74c3c;">-2.14%</td>
+                <td>0日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离+1.0%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-03-04</td>
+                <td style="font-weight:bold;">67.0</td>
+                <td>1.251</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.56%</td>
+                <td style="color:#e74c3c;">-0.24%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-2.5%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-03-10</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.286</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.17%</td>
+                <td style="color:#e74c3c;">-2.26%</td>
+                <td>1日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离+0.5%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-03-17</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.249</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.00%</td>
+                <td style="color:#e74c3c;">-0.32%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-2.0%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-03-19</td>
+                <td style="font-weight:bold;">67.0</td>
+                <td>1.234</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.70%</td>
+                <td style="color:#e74c3c;">-0.32%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-3.0%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-03-23</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>1.210</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.55%</td>
+                <td style="color:#27ae60;">+3.31%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 回踩MA20附近（偏离-4.6%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-03-24</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.230</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.41%</td>
+                <td style="color:#27ae60;">+3.17%</td>
+                <td>2日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-2.7%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-03-25</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.232</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.25%</td>
+                <td style="color:#e74c3c;">-0.32%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-2.3%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-03-30</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.228</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+6.84%</td>
+                <td style="color:#27ae60;">+4.32%</td>
+                <td>2日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离-2.1%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-05-06</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.346</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+2.67%</td>
+                <td style="color:#27ae60;">+0.59%</td>
+                <td>1日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离+0.1%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2026-05-11</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.354</td>
+                <td class="win-cell">N</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.44%</td>
+                <td style="color:#27ae60;">+0.07%</td>
+                <td>0日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离+0.2%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-05-13</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.349</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+0.82%</td>
+                <td style="color:#e74c3c;">-3.26%</td>
+                <td>1日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-0.4%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2026-05-14</td>
+                <td style="font-weight:bold;">65.0</td>
+                <td>1.355</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-0.66%</td>
+                <td style="color:#e74c3c;">-5.02%</td>
+                <td>0日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-0.1%）</td>
+            </tr>
+            <tr class="loss">
+                <td>trend_pullback</td>
+                <td>2026-05-15</td>
+                <td style="font-weight:bold;">60.0</td>
+                <td>1.338</td>
+                <td class="win-cell">N</td>
+                <td style="color:#e74c3c;font-weight:bold;">-2.24%</td>
+                <td style="color:#e74c3c;">-4.19%</td>
+                <td>0日</td>
+                <td class="reasons-cell">处于上升趋势中（MA200之上）; 精确回踩MA20（偏离-1.4%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-05-18</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>1.305</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+1.69%</td>
+                <td style="color:#27ae60;">+0.77%</td>
+                <td>3日</td>
+                <td class="reasons-cell">价格在MA200上方; 回踩MA20附近（偏离-3.6%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-05-19</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>1.287</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.81%</td>
+                <td style="color:#27ae60;">+3.65%</td>
+                <td>2日</td>
+                <td class="reasons-cell">价格在MA200上方; 回踩MA20附近（偏离-4.6%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-05-20</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>1.282</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+4.76%</td>
+                <td style="color:#27ae60;">+4.45%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 回踩MA20附近（偏离-4.7%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-05-27</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>1.334</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.45%</td>
+                <td style="color:#27ae60;">+3.45%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 精确回踩MA20（偏离+0.1%）</td>
+            </tr>
+            <tr class="win">
+                <td>trend_pullback</td>
+                <td>2026-06-03</td>
+                <td style="font-weight:bold;">62.0</td>
+                <td>1.288</td>
+                <td class="win-cell">Y</td>
+                <td style="color:#27ae60;font-weight:bold;">+3.18%</td>
+                <td style="color:#27ae60;">+0.00%</td>
+                <td>1日</td>
+                <td class="reasons-cell">价格在MA200上方; 回踩MA20附近（偏离-3.5%）</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>标普生物科技ETF算法优化 | 13种算法对比 | T+3胜率回测</p>
+        <p>本报告仅供参考，不构成投资建议。</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+{
+  "dividend_value": {
+    "algorithm": "dividend_value",
+    "signals": 21,
+    "wins": 15,
+    "win_rate": 71.4,
+    "avg_return": 0.89,
+    "avg_max_return": 2.48,
+    "avg_score": 70.6,
+    "best": 9.29,
+    "worst": -8.17
+  },
+  "broad_reversal": {
+    "algorithm": "broad_reversal",
+    "signals": 16,
+    "wins": 11,
+    "win_rate": 68.8,
+    "avg_return": 1.03,
+    "avg_max_return": 2.59,
+    "avg_score": 75.1,
+    "best": 9.29,
+    "worst": -8.17
+  },
+  "trend_pullback": {
+    "algorithm": "trend_pullback",
+    "signals": 110,
+    "wins": 68,
+    "win_rate": 61.8,
+    "avg_return": 0.25,
+    "avg_max_return": 1.15,
+    "avg_score": 64.6,
+    "best": 4.37,
+    "worst": -15.7
+  },
+  "extreme_reversal": {
+    "algorithm": "extreme_reversal",
+    "signals": 6,
+    "wins": 5,
+    "win_rate": 83.3,
+    "avg_return": 2.61,
+    "avg_max_return": 4.13,
+    "avg_score": 74.8,
+    "best": 9.29,
+    "worst": -2.58
+  },
+  "momentum_pullback": {
+    "algorithm": "momentum_pullback",
+    "signals": 6,
+    "wins": 3,
+    "win_rate": 50.0,
+    "avg_return": -0.24,
+    "avg_max_return": 0.46,
+    "avg_score": 65.5,
+    "best": 2.3,
+    "worst": -2.14
+  },
+  "support_rebound": {
+    "algorithm": "support_rebound",
+    "signals": 17,
+    "wins": 14,
+    "win_rate": 82.4,
+    "avg_return": 1.32,
+    "avg_max_return": 2.74,
+    "avg_score": 70.3,
+    "best": 9.29,
+    "worst": -4.99
+  },
+  "seasonal_value": {
+    "algorithm": "seasonal_value",
+    "signals": 16,
+    "wins": 11,
+    "win_rate": 68.8,
+    "avg_return": -0.75,
+    "avg_max_return": 2.1,
+    "avg_score": 69.9,
+    "best": 9.29,
+    "worst": -15.7
+  },
+  "financial_value": {
+    "algorithm": "financial_value",
+    "signals": 15,
+    "wins": 12,
+    "win_rate": 80.0,
+    "avg_return": 1.26,
+    "avg_max_return": 2.77,
+    "avg_score": 73.2,
+    "best": 9.29,
+    "worst": -4.99
+  },
+  "volatility_breakout": {
+    "algorithm": "volatility_breakout",
+    "signals": 17,
+    "wins": 13,
+    "win_rate": 76.5,
+    "avg_return": 0.98,
+    "avg_max_return": 2.31,
+    "avg_score": 67.8,
+    "best": 9.29,
+    "worst": -8.17
+  },
+  "cycle_momentum": {
+    "algorithm": "cycle_momentum",
+    "signals": 3,
+    "wins": 1,
+    "win_rate": 33.3,
+    "avg_return": -1.37,
+    "avg_max_return": -0.17,
+    "avg_score": 65.0,
+    "best": 0.62,
+    "worst": -2.58
+  },
+  "premium_rate": {
+    "algorithm": "premium_rate",
+    "signals": 5,
+    "wins": 3,
+    "win_rate": 60.0,
+    "avg_return": 0.45,
+    "avg_max_return": 3.12,
+    "avg_score": 65.2,
+    "best": 9.29,
+    "worst": -8.17
+  },
+  "gold_pair_reversal": {
+    "algorithm": "gold_pair_reversal",
+    "signals": 0,
+    "wins": 0,
+    "win_rate": 0,
+    "avg_return": 0,
+    "avg_max_return": 0,
+    "avg_score": 0,
+    "best": 0,
+    "worst": 0
+  },
+  "oil_pair_reversal": {
+    "algorithm": "oil_pair_reversal",
+    "signals": 21,
+    "wins": 17,
+    "win_rate": 81.0,
+    "avg_return": 1.29,
+    "avg_max_return": 2.79,
+    "avg_score": 68.0,
+    "best": 9.29,
+    "worst": -8.17
+  },
+  "biotech_trend_pullback": {
+    "algorithm": "biotech_trend_pullback",
+    "signals": 7,
+    "wins": 5,
+    "win_rate": 71.4,
+    "avg_return": 1.29,
+    "avg_max_return": 2.53,
+    "avg_score": 62.7,
+    "best": 10.05,
+    "worst": -2.58
+  }
+}

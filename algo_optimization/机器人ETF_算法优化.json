@@ -1,0 +1,74 @@
+{
+  "volatility_breakout (当前)": {
+    "signals": 43,
+    "wins": 36,
+    "win_rate": 83.7,
+    "avg_return": 0.41,
+    "avg_max_return": 2.61,
+    "avg_score": 70.3,
+    "best": 13.31,
+    "worst": -12.46,
+    "sharpe": 0.613,
+    "std": 4.41
+  },
+  "broad_reversal (基准1)": {
+    "signals": 34,
+    "wins": 29,
+    "win_rate": 85.3,
+    "avg_return": 0.72,
+    "avg_max_return": 3.05,
+    "avg_score": 70.7,
+    "best": 13.31,
+    "worst": -10.97,
+    "sharpe": 0.955,
+    "std": 4.37
+  },
+  "extreme_reversal (基准2)": {
+    "signals": 11,
+    "wins": 11,
+    "win_rate": 100.0,
+    "avg_return": 3.36,
+    "avg_max_return": 5.36,
+    "avg_score": 73.9,
+    "best": 13.31,
+    "worst": -5.44,
+    "sharpe": 2.451,
+    "std": 4.55
+  },
+  "A. 宽RSI+MA60版": {
+    "signals": 31,
+    "wins": 28,
+    "win_rate": 90.3,
+    "avg_return": 1.15,
+    "avg_max_return": 3.3,
+    "avg_score": 70.9,
+    "best": 13.31,
+    "worst": -10.97,
+    "sharpe": 1.534,
+    "std": 4.17
+  },
+  "B. 极端放宽+KDJ版": {
+    "signals": 13,
+    "wins": 13,
+    "win_rate": 100.0,
+    "avg_return": 3.26,
+    "avg_max_return": 5.15,
+    "avg_score": 73.7,
+    "best": 13.31,
+    "worst": -5.44,
+    "sharpe": 2.717,
+    "std": 4.32
+  },
+  "C. 混合趋势版": {
+    "signals": 44,
+    "wins": 36,
+    "win_rate": 81.8,
+    "avg_return": 0.47,
+    "avg_max_return": 2.62,
+    "avg_score": 68.7,
+    "best": 13.31,
+    "worst": -10.97,
+    "sharpe": 0.801,
+    "std": 3.86
+  }
+}

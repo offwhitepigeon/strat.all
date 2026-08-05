@@ -1,11 +1,12 @@
 @echo off
 REM ============================================================
-REM ETF信号系统 - 每日14:45自动运行 + 邮件推送
+REM ETF信号系统 - 单次运行 + 邮件推送
 REM ============================================================
-REM 可通过Windows任务计划程序调用此批处理文件
+REM 此脚本用于手动运行或被 run_intraday.py 调用
 REM
-REM 创建任务计划:
-REM   schtasks /create /tn "ETF信号系统" /tr "D:\workspace\strat.all\run_daily.bat" /sc daily /st 14:45
+REM 定时任务管理(每日9:30自动启动盘中信号):
+REM   安装: powershell -ExecutionPolicy Bypass -File setup_schedule.ps1
+REM   卸载: powershell -ExecutionPolicy Bypass -File remove_schedule.ps1
 REM ============================================================
 
 cd /d D:\workspace\strat.all

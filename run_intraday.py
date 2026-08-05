@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-# ETF盘中信号自动运行脚本 (不依赖QoderWork)
+# ETF盘中信号自动运行脚本
 #
-# 电脑开机/登录后自动运行, 交易日盘中定时生成信号并按需发邮件。
+# 由 Windows 任务计划程序每天 9:30 定时启动, 交易日盘中按时间表生成信号并按需发邮件。
+# 安装定时任务: powershell -ExecutionPolicy Bypass -File setup_schedule.ps1
+# 卸载定时任务: powershell -ExecutionPolicy Bypass -File remove_schedule.ps1
 #
 # 运行时间表(交易日):
 #   9:45  首次运行  --conditional-mail (有>=60分信号才发邮件)

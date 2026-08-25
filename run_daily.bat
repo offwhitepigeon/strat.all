@@ -2,9 +2,9 @@
 REM ============================================================
 REM ETF信号系统 - 单次运行 + 邮件推送
 REM ============================================================
-REM 此脚本用于手动运行或被 run_intraday.py 调用
+REM 此脚本用于手动运行或被 Windows 任务计划(14:45)调用
 REM
-REM 定时任务管理(每日9:30自动启动盘中信号):
+REM 定时任务管理:
 REM   安装: powershell -ExecutionPolicy Bypass -File setup_schedule.ps1
 REM   卸载: powershell -ExecutionPolicy Bypass -File remove_schedule.ps1
 REM ============================================================
@@ -25,5 +25,4 @@ echo ============================================
 echo 运行完成 %date% %time%
 echo ============================================
 
-REM 如果通过任务计划运行,保持窗口3秒后关闭
 timeout /t 3 /nobreak >nul

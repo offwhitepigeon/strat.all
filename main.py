@@ -3,25 +3,22 @@
 主运行脚本 - ETF多策略信号系统 v2.0
 =====================================
 
-每日14:45运行，基于当日14:45价格发出买入信号
+纯信号系统：每日14:45运行，基于当日14:45价格发出买入信号
 
 功能：
 1. 获取22只ETF的实时行情（14:45价格）
 2. 加载历史K线数据计算技术指标
-3. 根据每只ETF的算法类型生成信号
-4. 输出信号分(0-100)、操作建议、仓位百分比
+3. 根据每只ETF的算法类型生成信号（20种算法，使用16种）
+4. 输出信号分(0-100)、操作建议、理由列表
 5. 生成HTML可视化报告
 6. 保存历史数据供回测
 
 使用方法：
     python main.py                    # 立即运行一次
-    python main.py --schedule        # 定时模式（等待到14:45运行）
-    python main.py --time 14:45     # 指定运行时间
-    python main.py --backtest        # 运行回测
+    python main.py --backtest         # 运行回测
     python main.py --backtest --threshold 65  # 指定回测阈值
 
-作者：AI量化团队
-日期：2026-07-21
+定时运行：Windows任务计划每天14:45启动 daily_run.py
 """
 
 import os
@@ -29,7 +26,7 @@ import sys
 import json
 import argparse
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict, List, Optional
 
 # 导入自定义模块
@@ -266,71 +263,24 @@ def run_backtest(threshold: int = 60):
     return result
 
 
-def wait_for_target_time(target_time_str: str = '14:45'):
-    """
-    等待到目标时间
-
-    Args:
-        target_time_str: 目标时间字符串（HH:MM格式）
-    """
-    now = datetime.now()
-    target_hour, target_minute = map(int, target_time_str.split(':'))
-
-    target = now.replace(hour=target_hour, minute=target_minute, second=0, microsecond=0)
-
-    # 如果今天的时间已经过了，则等待明天
-    if now >= target:
-        target += timedelta(days=1)
-        logger.info(f"今天的{target_time_str}已过，将等待明天同一时间...")
-
-    wait_seconds = (target - now).total_seconds()
-
-    if wait_seconds > 0:
-        hours = int(wait_seconds // 3600)
-        minutes = int((wait_seconds % 3600) // 60)
-
-        logger.info(f"⏰ 定时模式已启动")
-        logger.info(f"   目标时间: {target.strftime('%Y-%m-%d %H:%M:%S')}")
-        logger.info(f"   等待时长: 约 {hours}小时{minutes}分钟")
-        logger.info("   (按 Ctrl+C 取消)\n")
-
-        import time
-        time.sleep(wait_seconds)
-
-
 def parse_args():
     """解析命令行参数"""
     parser = argparse.ArgumentParser(
-        description='ETF多策略信号系统 v2.0',
+        description='ETF多策略信号系统 v2.0 - 纯信号输出',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 使用示例：
   python main.py                    # 立即执行一次信号生成
-  python main.py --schedule         # 定时模式（等待到14:45执行）
-  python main.py --time 14:30       # 指定时间执行
   python main.py --backtest          # 运行T+3胜率回测
   python main.py --backtest --threshold 65  # 指定回测信号阈值
 
 系统特点：
   - 22只ETF覆盖不同行业/概念/大盘指数
-  - 20种独特算法，不同标的对应不同算法
+  - 20种算法（当前使用16种），不同标的对应不同算法
   - 每日14:45基于实时价格发出信号
   - 追求T+3胜率（3日内最高价收益>0.5%）
-  - 信号分0-100，越高越推荐买入
+  - 纯信号输出，不含资金管理逻辑
         """
-    )
-
-    parser.add_argument(
-        '--schedule', '-s',
-        action='store_true',
-        help='启用定时模式（等待到14:45执行）'
-    )
-
-    parser.add_argument(
-        '--time', '-t',
-        type=str,
-        default='14:45',
-        help='指定运行时间（格式 HH:MM），默认 14:45'
     )
 
     parser.add_argument(
@@ -364,10 +314,6 @@ def main():
         if args.backtest:
             run_backtest(threshold=args.threshold)
             return
-
-        # 定时模式
-        if args.schedule:
-            wait_for_target_time(args.time)
 
         # 正常执行
         logger.info("\n🚀 启动ETF多策略信号系统...\n")

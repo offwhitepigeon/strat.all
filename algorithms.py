@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-算法模块 - 13种独特买入算法
-===============================
+算法模块 - 20种买入算法
+==========================
 
 每种算法针对不同类型的ETF特征设计，追求T+3胜率：
+基础算法(12种):
 1. 红利估值型(dividend_value):       PE/PB分位+股息率+均线偏离
 2. 宽基均值回归型(broad_reversal):     RSI超卖+布林带+连续下跌
 3. 趋势回踩型(trend_pullback):         上升趋势+回踩均线+RSI回升
@@ -17,6 +18,17 @@
 11. 溢价率套利型(premium_rate):         折价率+超卖+Z-score
 12. 黄金股-黄金组合反弹型(gold_pair_reversal): 黄金趋势确认+相对超跌+动能衰减
 13. 石油组合反弹型(oil_pair_reversal): 原油趋势确认+价格区间+超卖(T+5)
+
+专属优化算法(7种,基于基础算法针对特定ETF调优):
+14. 生物科技趋势回踩型(biotech_trend_pullback):   trend_pullback生物科技优化版
+15. 黄金支撑反弹型(gold_support_rebound):           黄金专属支撑反弹
+16. 新能源超卖反弹型(new_energy_reversal):          新能源多因子超卖
+17. 股息率超卖反弹型(dividend_yield_reversal):      红利专属股息率增强版
+18. 机器人宽RSI反转型(robot_reversal):              机器人放宽阈值版
+19. 创新药反转型(pharma_reversal):                  宽基反转+趋势过滤
+20. 白酒价值季节型(wine_value_reversal):            金融价值+季节性因子
+
+当前22只ETF使用其中16种算法, 4种为基础算法预留(trend_pullback/support_rebound/seasonal_value/dividend_value)。
 
 信号分0-100：
   0-40:   无信号(WAIT)

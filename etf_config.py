@@ -5,31 +5,19 @@ ETF配置模块 - 22只多行业ETF标的池
 
 设计原则：
 1. 红利标的仅保留1只（510880 红利ETF）
-2. 覆盖23种不同行业/概念/大盘指数
+2. 覆盖不同行业/概念/大盘指数
 3. 每个标的分配独特的算法类型
 4. 追求T+3/T+5胜率（3/5日内最高价收益>0.5%）
 
-算法类型说明：
-- dividend_value:      红利估值型（PE/PB分位+股息率+均值偏离）
-- broad_reversal:      宽基均值回归型（RSI超卖+布林带+连跌）
-- trend_pullback:      趋势回踩型（上升趋势中回踩均线）
-- extreme_reversal:    极端反转型（极端RSI+Z-score+量能恐慌）
-- momentum_pullback:   动量回踩型（正动量+短期回踩）
-- support_rebound:      支撑反弹型（关键支撑+MACD背离）
-- seasonal_value:       季节估值型（季节性规律+超卖）
-- financial_value:      金融价值型（PB分位+股息率+RSI）
-- volatility_breakout:  波动率突破型（ATR收缩+突破）
-- cycle_momentum:       周期动量型（商品周期+动量+超卖）
-- premium_rate:         溢价率套利型（折价率+超卖+Z-score）
-- gold_pair_reversal:   黄金股-黄金组合反弹型（黄金趋势确认+相对超跌+动能衰减）★新增
-- oil_pair_reversal:    石油组合反弹型（原油趋势确认+价格区间+超卖T+5）★新增
-- biotech_trend_pullback: 生物科技趋势回踩型（趋势回踩+KDJ+放量, 标普生物科技专属）★新增
-- gold_support_rebound:  黄金支撑反弹型（支撑位+RSI+MACD背离+MA200趋势, 黄金专属）★新增
-- new_energy_reversal:   新能源超卖反弹型（RSI+MA200偏离+Z-score+KDJ+量能+动量, 新能源专属）★新增
-- dividend_yield_reversal: 股息率超卖反弹型（RSI+MA200偏离+Z-score+布林带+股息率分位, 红利专属）★新增
-- robot_reversal:        机器人宽RSI反转型（放宽RSI+布林带+连跌+KDJ+Z-score+MA60偏离, 机器人专属）★新增
-- pharma_reversal:       创新药反转型（broad_reversal核心+MA200趋势过滤, 创新药专属）★新增
-- wine_value_reversal:   白酒价值季节型（financial_value核心+白酒季节性因子, 酒ETF专属）★新增
+算法使用情况(共20种算法, 当前使用16种):
+- 基础算法: dividend_value, broad_reversal, trend_pullback, extreme_reversal,
+            momentum_pullback, support_rebound, seasonal_value, financial_value,
+            volatility_breakout, cycle_momentum, premium_rate,
+            gold_pair_reversal, oil_pair_reversal
+- 专属优化算法: biotech_trend_pullback, gold_support_rebound,
+                 new_energy_reversal, dividend_yield_reversal,
+                 robot_reversal, pharma_reversal, wine_value_reversal
+- 预留未使用(4种): trend_pullback, support_rebound, seasonal_value, dividend_value
 """
 
 from dataclasses import dataclass, field

@@ -11,6 +11,8 @@
 3. 根据ETF的算法类型选择对应算法
 4. 生成信号（信号分0-100、操作建议、仓位%）
 5. 如果有实时价格，用14:45价格替换收盘价计算
+
+纯信号系统：不包含资金管理/仓位控制逻辑，仅输出原始信号。
 """
 
 import os
@@ -29,28 +31,23 @@ logger = logging.getLogger(__name__)
 
 
 class SignalEngine:
-    """信号生成引擎"""
+    """信号生成引擎 — 纯信号输出，无资金管理"""
 
-    def __init__(self, cache_dir: str = None, cooldown_days: int = 0):
+    def __init__(self, cache_dir: str = None):
         """
         初始化信号引擎
 
         Args:
             cache_dir: 数据缓存目录
-            cooldown_days: 信号冷却期（交易日），可选安全网。
-                          默认0=关闭，由组合级资金管理控制仓位；
-                          设为3/5则额外启用固定冷却（防止下跌中继连续买入）。
         """
         self.data_engine = DataEngine(cache_dir=cache_dir)
         self.etf_pool = ETF_POOL
-        self.cooldown_days = cooldown_days
 
         # 预加载历史数据缓存
         self._history_cache: Dict[str, pd.DataFrame] = {}
         self._indicators_cache: Dict[str, pd.DataFrame] = {}
 
-        mode = f"冷却{self.cooldown_days}日" if self.cooldown_days > 0 else "资金管理模式"
-        logger.info(f"信号引擎初始化完成，共{len(self.etf_pool)}只ETF，模式: {mode}")
+        logger.info(f"信号引擎初始化完成，共{len(self.etf_pool)}只ETF")
 
     def load_history_data(self) -> Dict[str, pd.DataFrame]:
         """
@@ -94,145 +91,6 @@ class SignalEngine:
 
         logger.info(f"\n历史数据加载完成，成功{len(result)}/{len(self.etf_pool)}只\n")
         return result
-
-    def _check_cooldown(self, df, algorithm, threshold: int = 60) -> bool:
-        """
-        检查是否处于信号冷却期（过去N日内是否已有信号）
-
-        回看历史数据的最近cooldown_days个交易日，如果任一交易日
-        的算法信号>=threshold，则认为处于冷却期。
-
-        Args:
-            df: 含指标的DataFrame
-            algorithm: 算法实例
-            threshold: 信号阈值
-
-        Returns:
-            True=冷却中（应抑制信号），False=可发信号
-        """
-        n = len(df)
-        for j in range(1, self.cooldown_days + 1):
-            idx = n - j
-            if idx < 60:
-                break
-            past_slice = df.iloc[:idx + 1]
-            try:
-                past_signal = algorithm.calculate(past_slice)
-                if past_signal.score >= threshold:
-                    return True
-            except Exception:
-                continue
-        return False
-
-    def _get_active_positions(self, indicators_data: Dict[str, pd.DataFrame]) -> Dict[str, float]:
-        """
-        计算各ETF的活跃仓位（过去hold_days内信号产生的仓位）
-
-        遍历每只ETF的过去hold_days个交易日，检查是否有信号>=60分，
-        累加position_pct作为当前活跃仓位。
-
-        Returns:
-            {etf_code: total_position_pct} 活跃仓位字典
-        """
-        from algorithms import get_algorithm
-        active = {}
-
-        for etf in self.etf_pool:
-            df = indicators_data.get(etf.code)
-            if df is None or len(df) < 60:
-                continue
-
-            algorithm = get_algorithm(etf.algorithm)
-            hold_days = getattr(etf, 'hold_days', 3)
-            n = len(df)
-            pos_pct = 0
-
-            for j in range(1, hold_days + 1):
-                idx = n - j
-                if idx < 60:
-                    break
-                past_slice = df.iloc[:idx + 1]
-                try:
-                    past_signal = algorithm.calculate(past_slice)
-                    if past_signal.score >= 60:
-                        pos_pct += past_signal.position_pct
-                except Exception:
-                    continue
-
-            if pos_pct > 0:
-                active[etf.code] = pos_pct
-
-        return active
-
-    def _apply_portfolio_filter(
-        self,
-        signals: List[Dict[str, Any]],
-        indicators_data: Dict[str, pd.DataFrame]
-    ) -> List[Dict[str, Any]]:
-        """
-        组合级资金管理过滤
-
-        规则：
-        - 单只ETF仓位 < 50%时可加仓（金字塔加仓）
-        - 组合总仓位 < 100%
-        - 过去hold_days内的信号计入活跃仓位
-
-        处理顺序：按信号分降序（高分优先获得资金分配）
-        """
-        MAX_SINGLE_ETF = 50  # 单只ETF最大仓位%
-        MAX_TOTAL = 100       # 组合最大总仓位%
-
-        # Step 1: 计算当前各ETF活跃仓位
-        active_positions = self._get_active_positions(indicators_data)
-        total_active = sum(active_positions.values())
-
-        if total_active > 0:
-            logger.info(f"  组合资金管理: 当前活跃仓位 {total_active}% ({len(active_positions)}只ETF)")
-
-        # Step 2: 按信号分降序处理（高分优先）
-        buy_signals = [s for s in signals if s['score'] >= 60]
-        buy_signals.sort(key=lambda x: -x['score'])
-
-        for sig in buy_signals:
-            code = sig['etf_code']
-            new_pos = sig['position_pct']
-            current_pos = active_positions.get(code, 0)
-
-            # 检查单仓上限
-            if current_pos + new_pos > MAX_SINGLE_ETF:
-                if current_pos > 0:
-                    # 已有仓位，加仓会超限 → 降级为WATCH
-                    sig['score'] = min(sig['score'], 59)
-                    sig['level'] = 'WATCH'
-                    sig['position_pct'] = 5
-                    sig['action'] = f'单仓上限（当前{current_pos}%+新{new_pos}%>50%）'
-                    sig['reasons'] = sig.get('reasons', []) + [
-                        f'组合资金管理：该ETF已有{current_pos}%仓位，加仓将超过50%上限'
-                    ]
-                    logger.info(f"  ⏸️ {sig['etf_name']:12s} | 单仓上限，降级为WATCH")
-                # 无已有仓位的新信号不会触发（new_pos最大50%）
-                continue
-
-            # 检查组合总仓位上限
-            if total_active + new_pos > MAX_TOTAL:
-                # 组合仓位已满 → 降级
-                sig['score'] = min(sig['score'], 59)
-                sig['level'] = 'WATCH'
-                sig['position_pct'] = 5
-                sig['action'] = f'组合仓位上限（当前{total_active}%+新{new_pos}%>100%）'
-                sig['reasons'] = sig.get('reasons', []) + [
-                    f'组合资金管理：组合总仓位{total_active}%，加仓将超过100%上限'
-                ]
-                logger.info(f"  ⏸️ {sig['etf_name']:12s} | 组合仓位上限，降级为WATCH")
-                continue
-
-            # 通过检查：更新活跃仓位
-            active_positions[code] = current_pos + new_pos
-            total_active += new_pos
-            if current_pos > 0:
-                logger.info(f"  📦 {sig['etf_name']:12s} | 金字塔加仓 {current_pos}%→{current_pos + new_pos}%")
-
-        return signals
 
     def generate_signals(
         self,
@@ -307,21 +165,6 @@ class SignalEngine:
                 signal = algorithm.calculate(df, current_price=current_price,
                                            extra_data=extra_data)
 
-                # 信号冷却检查（仅当cooldown_days>0时启用固定冷却安全网）
-                if signal.score >= 60 and self.cooldown_days > 0:
-                    if self._check_cooldown(df, algorithm, threshold=60):
-                        from algorithms import SignalResult
-                        signal = SignalResult(
-                            score=0,
-                            level='WAIT',
-                            position_pct=0,
-                            action='冷却期（近期已发信号，暂停买入）',
-                            reasons=['信号冷却中，防止下跌中继连续买入'],
-                            indicators=signal.indicators,
-                            algorithm=signal.algorithm,
-                        )
-                        logger.info(f"  ⏸️ {etf.name:12s} | 冷却期，抑制信号")
-
                 # 构建结果
                 last_date = df['date'].iloc[-1]
                 last_close = float(df['close'].iloc[-1])
@@ -374,12 +217,6 @@ class SignalEngine:
 
         # 按信号分排序
         signals.sort(key=lambda x: x['score'], reverse=True)
-
-        # 组合级资金管理（cooldown_days==0时启用，替代固定冷却）
-        if self.cooldown_days == 0:
-            signals = self._apply_portfolio_filter(signals, indicators_data)
-            # 重新排序（过滤可能降级了一些信号）
-            signals.sort(key=lambda x: x['score'], reverse=True)
 
         logger.info(f"\n{'='*60}")
         logger.info(f"信号生成完成，共{len(signals)}只ETF")
@@ -443,7 +280,7 @@ class SignalEngine:
 if __name__ == '__main__':
     logging.basicConfig(
         level=logging.INFO,
-        format='%(asctime)s [%(levelname)s] %(message)s',
+        format='%(asctime)s [%(levelname)-8s] %(message)s',
         handlers=[logging.StreamHandler()]
     )
 

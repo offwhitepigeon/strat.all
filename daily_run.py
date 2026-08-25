@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-每日定时运行脚本 - ETF信号系统 + 邮件推送
+每日运行脚本 - ETF信号系统 + 邮件推送
 ==========================================
 
 功能：
@@ -10,21 +10,21 @@
 
 使用方法：
     python daily_run.py                 # 立即运行一次
-    python daily_run.py --schedule      # 等待到14:45自动运行
     python daily_run.py --no-realtime   # 不使用实时价格（用收盘价）
     python daily_run.py --no-mail       # 只运行不发邮件
+    python daily_run.py --conditional-mail  # 仅有有效信号(≥60分)时才发邮件
 
 配置文件: mail_config.json
+定时运行: Windows任务计划每天14:45启动
 """
 
 import os
 import sys
 import json
-import time
 import smtplib
 import logging
 import argparse
-from datetime import datetime, timedelta
+from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -362,33 +362,9 @@ def send_email(result: dict, config: dict) -> bool:
         return False
 
 
-def wait_for_target_time(target_time_str: str = '14:45'):
-    """等待到目标时间"""
-    now = datetime.now()
-    target_hour, target_minute = map(int, target_time_str.split(':'))
-
-    target = now.replace(hour=target_hour, minute=target_minute, second=0, microsecond=0)
-
-    if now >= target:
-        target += timedelta(days=1)
-
-    wait_seconds = (target - now).total_seconds()
-    hours = int(wait_seconds // 3600)
-    minutes = int((wait_seconds % 3600) // 60)
-
-    logger.info(f"定时模式已启动")
-    logger.info(f"  目标时间: {target.strftime('%Y-%m-%d %H:%M:%S')}")
-    logger.info(f"  等待时长: 约 {hours}小时{minutes}分钟")
-    logger.info(f"  (按 Ctrl+C 取消)")
-
-    time.sleep(wait_seconds)
-
-
 def main():
     """主函数"""
     parser = argparse.ArgumentParser(description='ETF信号系统 - 每日运行 + 邮件推送')
-    parser.add_argument('--schedule', '-s', action='store_true', help='定时模式（等待到14:45执行）')
-    parser.add_argument('--time', '-t', type=str, default='14:45', help='运行时间（HH:MM）')
     parser.add_argument('--no-realtime', action='store_true', help='不使用实时价格')
     parser.add_argument('--no-mail', action='store_true', help='只运行不发邮件')
     parser.add_argument('--conditional-mail', action='store_true', help='仅有有效信号(≥60分)时才发邮件')
@@ -396,10 +372,6 @@ def main():
     args = parser.parse_args()
 
     try:
-        # 定时模式
-        if args.schedule:
-            wait_for_target_time(args.time)
-
         # 运行分析
         logger.info("启动ETF信号系统...")
         result = run_analysis(use_realtime=not args.no_realtime)
